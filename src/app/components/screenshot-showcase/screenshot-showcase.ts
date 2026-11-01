@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme';
 
@@ -8,7 +8,7 @@ import { ThemeService } from '../../services/theme';
 interface ScreenshotItem {
   id: string;
   title: string;
-  category: 'connections' | 'schema' | 'datagrid' | 'querystudio' | 'monitor';
+  category: 'connections' | 'schema' | 'datagrid' | 'querystudio' | 'monitor' | 'security';
   description: string;
   lightImage: string;
   darkImage: string;
@@ -28,7 +28,7 @@ interface ScreenshotItem {
   styleUrl: './screenshot-showcase.scss',
 })
 export class ScreenshotShowcase implements OnInit {
-  private themeService = inject(ThemeService);
+  public themeService = inject(ThemeService);
 
   /** The initial category to filter by on load. */
   @Input() initialCategory = 'all';
@@ -45,6 +45,15 @@ export class ScreenshotShowcase implements OnInit {
   /** The screenshot currently being viewed in the fullscreen modal lightbox, if any. */
   activeModalItem: ScreenshotItem | null = null;
 
+  constructor() {
+    effect(() => {
+      const isDark = this.themeService.isDarkMode();
+      if (this.activeThemeMode === 'auto') {
+        this.effectiveTheme = isDark ? 'dark' : 'light';
+      }
+    });
+  }
+
   categories = [
     { id: 'all', label: 'All Views' },
     { id: 'connections', label: 'Connections & SSH' },
@@ -52,6 +61,7 @@ export class ScreenshotShowcase implements OnInit {
     { id: 'datagrid', label: '2D Data Grid' },
     { id: 'querystudio', label: 'Query Studio & EXPLAIN' },
     { id: 'monitor', label: 'Server Monitor' },
+    { id: 'security', label: 'Security & Settings' },
   ];
 
   screenshots: ScreenshotItem[] = [
@@ -60,60 +70,80 @@ export class ScreenshotShowcase implements OnInit {
       title: 'Multi-Host Connections & SSH Status',
       category: 'connections',
       badge: 'Cluster Hub',
-      lightImage: 'screenshots/01-connections-home.png',
-      darkImage: 'screenshots/01-connections-home.png',
+      lightImage: 'screenshots/connections_home_light.png',
+      darkImage: 'screenshots/connections_home_dark.png',
       description:
-        'Manage MySQL & MariaDB clusters with live SSH bastion tunnel indicators, SSL status badges, and round-trip latency telemetry.',
+        'Manage MySQL & MariaDB clusters with live SSH bastion tunnel indicators, SSL status badges, and active session controls.',
     },
     {
       id: 'connection-ssh-config',
-      title: 'SSH Bastion & Hardware Keystore Auth',
+      title: 'SSH Bastion & Handshake Diagnostics',
       category: 'connections',
       badge: 'Zero-Trust Tunnel',
-      lightImage: 'screenshots/02-connection-ssh-config.png',
-      darkImage: 'screenshots/02-connection-ssh-config.png',
+      lightImage: 'screenshots/connection_ssh_config_light.png',
+      darkImage: 'screenshots/connection_ssh_config_dark.png',
       description:
-        'Configure direct-tcpip SSH port forwarding, multi-hop jump hosts, TOFU host verification, and Android Keystore AES-256-GCM credentials.',
+        'Configure multi-hop SSH port forwarding, hardware-backed Keystore keys, and step-by-step connection handshake diagnostics.',
     },
     {
-      id: 'schema-ddl-inspector',
-      title: 'Visual Schema & DDL Inspector',
+      id: 'schema-columns',
+      title: 'Visual Schema & Column Inspector',
       category: 'schema',
       badge: 'Schema Explorer',
-      lightImage: 'screenshots/03-schema-ddl-inspector.png',
-      darkImage: 'screenshots/03-schema-ddl-inspector.png',
+      lightImage: 'screenshots/schema_columns_light.png',
+      darkImage: 'screenshots/schema_columns_dark.png',
       description:
-        'Browse databases, tables, views, procedures, triggers, column types, indexes, foreign keys, and live SHOW CREATE TABLE DDL.',
+        'Browse databases, tables, views, routines, triggers, primary keys, auto-increment badges, and column data types.',
+    },
+    {
+      id: 'schema-ddl',
+      title: 'Live SHOW CREATE TABLE DDL Viewer',
+      category: 'schema',
+      badge: 'DDL Script',
+      lightImage: 'screenshots/schema_ddl_light.png',
+      darkImage: 'screenshots/schema_ddl_dark.png',
+      description:
+        'Inspect and copy complete CREATE TABLE DDL definitions, BTREE index cardinalities, and foreign key constraints.',
     },
     {
       id: 'table-data-grid',
-      title: '2D Table Data Grid & Row CRUD',
+      title: '2D Table Data Grid & Staged CRUD',
       category: 'datagrid',
       badge: 'Data Grid',
-      lightImage: 'screenshots/04-table-data-grid-editor.png',
-      darkImage: 'screenshots/04-table-data-grid-editor.png',
+      lightImage: 'screenshots/table_data_grid_light.png',
+      darkImage: 'screenshots/table_data_grid_dark.png',
       description:
-        'Inspect and mutate table rows in a tabular monospace grid with PK/FK badges, column sorting, pagination, and transactional UPDATE generation.',
+        'Filter rows with WHERE clauses, inspect NULL and JSON pills, and stage transactional row mutations before committing.',
     },
     {
       id: 'sql-query-studio',
       title: 'Interactive SQL Query Studio & EXPLAIN',
       category: 'querystudio',
       badge: 'Query Studio',
-      lightImage: 'screenshots/05-sql-query-studio-explain.png',
-      darkImage: 'screenshots/05-sql-query-studio-explain.png',
+      lightImage: 'screenshots/query_studio_explain_light.png',
+      darkImage: 'screenshots/query_studio_explain_dark.png',
       description:
-        'Author queries with real-time SQL syntax highlighting, docked SQL symbol bar, parameterized snippets, and visual EXPLAIN execution plan trees.',
+        'Author queries with real-time SQL syntax highlighting, docked SQL symbol bar, and visual EXPLAIN execution plan warnings.',
     },
     {
       id: 'server-process-monitor',
       title: 'Real-Time Server Process Monitor',
       category: 'monitor',
       badge: 'Live Telemetry',
-      lightImage: 'screenshots/06-server-process-monitor.png',
-      darkImage: 'screenshots/06-server-process-monitor.png',
+      lightImage: 'screenshots/server_process_monitor_light.png',
+      darkImage: 'screenshots/server_process_monitor_dark.png',
       description:
-        'Monitor active server threads (SHOW FULL PROCESSLIST), filter slow queries, inspect sparkline load, and execute one-tap KILL QUERY commands.',
+        'Monitor live QPS sparklines, InnoDB buffer pool hit ratio, active threads, and terminate slow queries.',
+    },
+    {
+      id: 'settings-security',
+      title: 'Security, Biometrics & Encrypted Backups',
+      category: 'security',
+      badge: 'Settings & Pro',
+      lightImage: 'screenshots/settings_light.png',
+      darkImage: 'screenshots/settings_dark.png',
+      description:
+        'Configure theme modes, biometric app locking, destructive query confirmation guards, and AES-256-GCM encrypted backups.',
     },
   ];
 
@@ -161,7 +191,11 @@ export class ScreenshotShowcase implements OnInit {
    * @param item The screenshot item.
    */
   getImagePath(item: ScreenshotItem): string {
-    return this.effectiveTheme === 'dark' ? item.darkImage : item.lightImage;
+    const theme =
+      this.activeThemeMode === 'auto'
+        ? (this.themeService.isDarkMode() ? 'dark' : 'light')
+        : this.effectiveTheme;
+    return theme === 'dark' ? item.darkImage : item.lightImage;
   }
 
   /**

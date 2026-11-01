@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Home } from './home';
+import { ThemeService } from '../../services/theme';
 
 describe('Home', () => {
   let component: Home;
@@ -64,5 +65,18 @@ describe('Home', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-screenshot-showcase')).toBeTruthy();
     expect(compiled.querySelector('app-query-studio-preview')).toBeTruthy();
+  });
+
+  it('should update hero screenshot image source based on theme mode', () => {
+    const themeService = TestBed.inject(ThemeService);
+    const heroImg = fixture.nativeElement.querySelector('.hero-screen-img') as HTMLImageElement;
+
+    themeService.isDarkMode.set(false);
+    fixture.detectChanges();
+    expect(heroImg.getAttribute('src')).toBe('screenshots/query_studio_explain_light.png');
+
+    themeService.isDarkMode.set(true);
+    fixture.detectChanges();
+    expect(heroImg.getAttribute('src')).toBe('screenshots/query_studio_explain_dark.png');
   });
 });
