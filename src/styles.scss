@@ -1,0 +1,180 @@
+/* Global Design System & Color Palette (Aligned with SQL Pulse Design System & Material 3) */
+
+:root {
+  /* Brand & Logo Tokens */
+  --brand-logo-bg: #121418;
+  --brand-logo-accent: #52d1fa;
+
+  /* Light Theme */
+  --color-primary: #006884;
+  --color-primary-hover: #005269;
+  --color-secondary: #0083a8;
+  --color-tertiary: #d97706;
+  --color-background: #f4f7fa;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #eef2f6;
+  --color-glass-bg: rgba(255, 255, 255, 0.82);
+  --color-glass-border: rgba(15, 23, 42, 0.1);
+  --color-on-background: #0f172a;
+  --color-on-surface: #1e293b;
+  --color-border: rgba(15, 23, 42, 0.12);
+  --color-accent-badge-bg: rgba(82, 209, 250, 0.18);
+  --color-accent-badge-text: #004d63;
+  --color-card-shadow: rgba(15, 23, 42, 0.08);
+}
+
+body.dark-theme {
+  /* Abyssal Slate / Nord Charcoal Dark Theme */
+  --color-primary: #52d1fa;
+  --color-primary-hover: #88c0d0;
+  --color-secondary: #88c0d0;
+  --color-tertiary: #f29111;
+  --color-background: #0a0c10;
+  --color-surface: #121418;
+  --color-surface-elevated: #1e222a;
+  --color-glass-bg: rgba(18, 20, 24, 0.78);
+  --color-glass-border: rgba(225, 226, 229, 0.12);
+  --color-on-background: #e1e2e5;
+  --color-on-surface: #c2c7d0;
+  --color-border: #3a3f4a;
+  --color-accent-badge-bg: rgba(82, 209, 250, 0.16);
+  --color-accent-badge-text: #52d1fa;
+  --color-card-shadow: rgba(0, 0, 0, 0.45);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  margin: 0;
+  padding: 0;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism Surface Utility */
+.glass-panel {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+}
+
+/* Typography Utility Classes */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  margin-top: 0;
+  letter-spacing: -0.01em;
+}
+
+.terminal-text,
+code,
+pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* App Button Global Styles & Encapsulation Overrides */
+app-button {
+  display: inline-block;
+
+  a.btn,
+  button.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    gap: 0.5rem;
+    text-decoration: none !important;
+    line-height: 1.2;
+    box-sizing: border-box;
+
+    &.primary {
+      background-color: var(--color-primary) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+      body.dark-theme & {
+        color: #0a0c10 !important;
+        font-weight: 600;
+      }
+
+      *,
+      span,
+      .material-icons {
+        color: inherit !important;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      &:hover:not(.disabled) {
+        filter: brightness(0.95);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &.secondary {
+      background-color: var(--color-surface) !important;
+      color: var(--color-primary) !important;
+      border: 1px solid var(--color-border);
+
+      *,
+      span,
+      .material-icons {
+        color: inherit !important;
+      }
+    }
+
+    &.outlined {
+      background-color: transparent !important;
+      color: var(--color-primary) !important;
+      border: 1px solid var(--color-primary);
+
+      *,
+      span,
+      .material-icons {
+        color: inherit !important;
+      }
+    }
+  }
+}
+
+/* Accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  padding: 1rem;
+  background: var(--color-primary);
+  color: #ffffff;
+  z-index: 2000;
+  transition: top 0.2s;
+  text-decoration: none;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+main[tabindex='-1']:focus {
+  outline: none;
+}

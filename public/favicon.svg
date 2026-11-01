@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Full-bleed flat solid background (No gradients, no textures, no glows) -->
+  <rect width="512" height="512" fill="#121418"/>
+
+  <!-- Main Emblem Group: Centered in 512x512 safe zone -->
+  <g id="emblem">
+    <!-- 3-Disc Flat Database Cylinder Stack in solid #52D1FA -->
+    <!-- Tier 1 (Top Disc) -->
+    <!-- Top disc rim/body -->
+    <path d="M 146,155 C 146,182 366,182 366,155 L 366,192 C 366,219 146,219 146,192 Z" fill="#52D1FA"/>
+    <!-- Top disc ellipse lid -->
+    <ellipse cx="256" cy="155" rx="110" ry="27" fill="#52D1FA"/>
+    <!-- Flat surface accent ellipse on top disc lid for subtle crisp separation -->
+    <ellipse cx="256" cy="155" rx="90" ry="20" fill="#121418"/>
+    <ellipse cx="256" cy="155" rx="72" ry="15" fill="#52D1FA"/>
+
+    <!-- Tier 2 (Middle Disc) -->
+    <path d="M 146,230 C 146,257 366,257 366,230 L 366,268 C 366,295 146,295 146,268 Z" fill="#52D1FA"/>
+
+    <!-- Tier 3 (Bottom Disc) -->
+    <path d="M 146,306 C 146,333 366,333 366,306 L 366,344 C 366,371 146,371 146,344 Z" fill="#52D1FA"/>
+
+    <!-- Pulse Waveform Geometry:
+         Knockout under-stroke in #121418 to create crisp flat negative space gap,
+         followed by solid #52D1FA stroke. -->
+    
+    <!-- Negative Space Cutout (Masking gap behind pulse line) -->
+    <path d="M 86,250 L 176,250 L 206,225 L 234,312 L 268,142 L 298,296 L 328,250 L 426,250"
+          fill="none"
+          stroke="#121418"
+          stroke-width="26"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Crisp Single-Weight Pulse Line in solid #52D1FA -->
+    <path d="M 86,250 L 176,250 L 206,225 L 234,312 L 268,142 L 298,296 L 328,250 L 426,250"
+          fill="none"
+          stroke="#52D1FA"
+          stroke-width="12"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,52 @@
+# SQL Pulse — Android SQL Database Studio
+
+SQL Pulse is a production-grade, high-performance Android MySQL and MariaDB client and database management studio (`com.johnan.mysqlclient`, website: https://sql-pulse.nanzen.se/) engineered by Nanzen for database administrators, backend developers, site reliability engineers (SREs), and DevOps professionals who need native, secure, low-latency mobile database administration.
+
+## Core Architecture & Engine
+
+*   **Pure-Kotlin Wire Protocol v10 Engine (`:mysql-core`):** Zero-dependency pure-Kotlin (`kotlin("jvm")`) implementation of the MySQL Client/Server Wire Protocol v10 running entirely on `kotlinx-coroutines-core`. Completely eliminates heavy JDBC drivers and JVM ORM overhead.
+    *   Full handshake initialization (Protocol 10), Capability Flags negotiation, and SSL/TLS socket upgrades.
+    *   Fast authentication support: `mysql_native_password`, `caching_sha2_password` (RSA keypair and AES-GCM scramble exchange via standard JVM crypto).
+    *   Low-level packet encoding/decoding: OK packet, ERR packet, EOF packet, Column Definition packet, Text and Binary Row Data packets, `COM_QUERY`, `COM_PING`, `COM_QUIT`, and `COM_STMT_EXECUTE`.
+*   **SSH Bastion Tunneling (`:ssh-core`):** Direct-tcpip SSH port forwarding engine (`io.github.johnan:ssh-core`) allowing secure database connections to private VPCs, bastion jump-hosts, and air-gapped database clusters without public IP exposure. Features Trust-On-First-Use (TOFU) host-key fingerprinting and hardware Keystore authentication.
+*   **Hardware-Backed Keystore & Biometric Security:** Master database credentials, private keys, and connection profiles are encrypted at rest using Android Keystore `AES-256-GCM`. Access is gated by biometric authentication (fingerprint, face unlock) with system lock fallback.
+*   **Zero-Middleman Direct Architecture:** No telemetry servers, no intermediate cloud proxies, and no external relay services. Sockets connect directly from the Android device to the target MySQL/MariaDB host or SSH bastion.
+
+## Key Features & Studio Capabilities
+
+### 1. Interactive SQL Query Studio & Visual EXPLAIN
+*   **Monospace SQL Editor:** Syntax-highlighted query editor with docked horizontal symbol bar (`SELECT`, `WHERE`, `JOIN`, `LIMIT`, `ORDER BY`, `;`), query history, and parameterized snippet library.
+*   **Visual EXPLAIN Cost Tree:** Interactive visualization of MySQL execution plans (`EXPLAIN FORMAT=JSON`), detailing access types (`ALL`, `index`, `range`, `ref`, `eq_ref`, `const`), filtered percentages, temporary table usage, filesort triggers, and cost metrics to troubleshoot slow queries on mobile.
+*   **Out-of-Band Query Cancellation:** Separate management socket connection capable of issuing instant `KILL QUERY <id>` commands to immediately abort long-running runaway queries without dropping the primary connection session.
+*   **Background Data Export:** Export result sets to CSV, JSON, and formatted SQL INSERT statements with Android DownloadManager and system share sheets.
+
+### 2. 2D Table Data Grid & Transactional CRUD
+*   **Two-Dimensional Virtualized Grid:** High-density monospace tabular grid supporting bidirectional smooth scrolling, sticky column headers, and primary key (`PK`) pinning.
+*   **Transactional Cell Editing:** Inline cell editing with staged pending changes, rollback capability, and explicit `COMMIT` / `ROLLBACK` transactional safeguards.
+*   **Pill-Shaped Type Badges:** Color-coded micro-badges for `PK` (Amber Gold), `FK` (Frost Cyan), `NULL`, `JSON`, and `BLOB` fields with inline detail inspectors.
+
+### 3. Schema & DDL Inspector
+*   **Hierarchical Schema Explorer:** Fast inspection of databases, tables, views, stored procedures, triggers, indexes, and foreign key relations.
+*   **Instant DDL Generation:** One-tap `SHOW CREATE TABLE` DDL inspection with syntax highlighting and clipboard export.
+*   **Table Metadata & Index Metrics:** Detailed storage engine stats (`InnoDB`, `MyISAM`), row counts, data size, index size, collation, and index cardinality.
+
+### 4. Real-Time Server Process Monitor
+*   **Live Thread Telemetry:** Visualizes `SHOW FULL PROCESSLIST` with real-time thread activity, active user accounts, client hostnames, target databases, command states, and execution elapsed times.
+*   **Administrative Process Termination:** Out-of-band administrative execution of `KILL <process_id>` to instantly terminate stuck or resource-hogging background threads.
+*   **Destructive Query Safeguards:** Built-in semantic parser intercepts destructive queries (`DROP DATABASE`, `DROP TABLE`, `TRUNCATE`, mass `DELETE` without `WHERE`) and requires explicit multi-step confirmation before submission.
+
+## Technical Specifications
+
+*   **Application ID:** `com.johnan.mysqlclient`
+*   **Platform:** Android 9.0+ (API level 28+)
+*   **UI Framework:** Jetpack Compose (Material 3), Light & Dark Theme, dynamic screen adaptation for phones, foldables, and tablets.
+*   **Protocols Supported:** MySQL Protocol 10 (MySQL 5.7, 8.0+, MariaDB 10.3+)
+*   **SSH Protocols:** SSH-2.0, direct-tcpip port forwarding, ECDSA, Ed25519, RSA-SHA2-256/512.
+*   **Localization:** English (`en-US`), German (`de-DE`), Spanish (`es-ES`), French (`fr-FR`).
+*   **Updates & Billing:** Google Play In-App Updates (Immediate priority for security fixes, flexible background for feature drops) and Google Play In-App Purchases (Pro features).
+
+## Related Products by Nanzen
+
+*   **Android SSH Client:** High-performance native Android SSH & SFTP client featuring an advanced terminal emulator (XTerm-256, TrueColor, Kitty graphics protocol), remote code/config editor, dynamic SOCKS5/remote port forwarding, Sentinel tapjacking defense, and hardware Keystore authentication.
+    *   Website: https://ssh-client.nanzen.se/
+    *   Package Name: `com.johnan.sshclient`

@@ -1,0 +1,162 @@
+<section class="features-page">
+  <div class="features-header">
+    <span class="page-badge">Studio Architecture</span>
+    <h1>SQL Pulse Feature Matrix</h1>
+    <p>Discover the zero-overhead, production-grade capabilities of SQL Pulse — the premier Android MySQL and MariaDB database management studio.</p>
+  </div>
+
+  <!-- Category 1: Native Wire Protocol & Connectivity -->
+  <section class="feature-category-section">
+    <div class="category-title">
+      <span class="material-icons">storage</span>
+      <h2>Native Wire Protocol & Connectivity</h2>
+    </div>
+    <div class="features-grid">
+      <app-feature-card
+        icon="hub"
+        title="Native MySQL & MariaDB Wire Protocol v10"
+        description="Zero-dependency pure-Kotlin (:mysql-core) implementation of MySQL Protocol 10 with fast auth (mysql_native_password, caching_sha2_password RSA/AES), binary/text row parsing, and coroutine socket I/O without heavy JDBC overhead."
+      ></app-feature-card>
+      <app-feature-card
+        icon="vpn_lock"
+        title="Flexible Direct TCP & SSL/TLS"
+        description="Connect directly to MySQL 5.7, 8.0+, and MariaDB servers over standard TCP sockets with full TLS handshake verification, custom CA certificates, and strict SSL encryption modes."
+      ></app-feature-card>
+      <app-feature-card
+        icon="alt_route"
+        title="SSH Bastion & Jump-Host Tunneling"
+        description="Native integrated direct-tcpip port forwarding via :ssh-core. Securely reach private VPC and firewalled database clusters through intermediate SSH bastion jump-hosts with TOFU host verification."
+      ></app-feature-card>
+      <app-feature-card
+        icon="sync"
+        title="Active-Session Foreground Service"
+        description="Resilient Android foreground service architecture keeps your database sessions, long-running queries, and SSH tunnels alive across app switching, orientation changes, and system memory pressure."
+      ></app-feature-card>
+    </div>
+  </section>
+
+  <!-- Category 2: Interactive SQL Query Studio -->
+  <section class="feature-category-section">
+    <div class="category-title">
+      <span class="material-icons">terminal</span>
+      <h2>Interactive SQL Query Studio</h2>
+    </div>
+    <div class="features-grid">
+      <app-feature-card
+        icon="code"
+        title="Syntax-Highlighted SQL Editor & Symbol Bar"
+        description="Monospace SQL editor with real-time keyword highlighting, docked SQL symbol toolbar (SELECT, WHERE, JOIN, LIMIT, *), query history bookmarks, and auto-formatting."
+      ></app-feature-card>
+      <app-feature-card
+        icon="account_tree"
+        title="Visual EXPLAIN Execution Plan Tree"
+        description="Interactive tree diagram of MySQL EXPLAIN FORMAT=JSON execution plans. Instantly inspect query cost, scan types (ALL, index, range, ref), row filtering percentages, and index bottlenecks."
+      ></app-feature-card>
+      <app-feature-card
+        icon="bookmark"
+        title="Parameterized SQL Snippets & History"
+        description="Save frequent database scripts as reusable parameterized snippets with prompt variables. Search query execution history with timestamped latency metrics and row counts."
+      ></app-feature-card>
+      <app-feature-card
+        icon="cancel"
+        title="Out-of-Band Query Cancellation"
+        description="Dedicated secondary management socket lets you issue instant KILL QUERY commands to abort stuck or runaway queries without tearing down your primary session."
+      ></app-feature-card>
+      <app-feature-card
+        icon="file_download"
+        title="Background Export to CSV, JSON & SQL"
+        description="Stream query result sets directly into CSV, JSON, or SQL INSERT files in the background using Android DownloadManager and native system share sheets."
+      ></app-feature-card>
+    </div>
+  </section>
+
+  <!-- Category 3: 2D Table Data Grid & Schema Inspector -->
+  <section class="feature-category-section">
+    <div class="category-title">
+      <span class="material-icons">table_chart</span>
+      <h2>2D Table Data Grid & Schema Inspector</h2>
+    </div>
+    <div class="features-grid">
+      <app-feature-card
+        icon="grid_on"
+        title="2D Monospace Table Data Grid"
+        description="High-performance virtualized 2D grid with bidirectional scrolling, sticky column headers, pinned primary key columns, and pill badges for PK, FK, NULL, JSON, and BLOB values."
+      ></app-feature-card>
+      <app-feature-card
+        icon="edit_note"
+        title="Transactional Row CRUD & Inline Editing"
+        description="Tap-to-edit cell values with pending visual change indicators, new row insertion, record deletion, and explicit transactional COMMIT / ROLLBACK confirmation safety."
+      ></app-feature-card>
+      <app-feature-card
+        icon="schema"
+        title="Visual Schema & DDL Inspector"
+        description="Browse relational tables, views, stored routines, indexes, and foreign keys. View auto-generated SHOW CREATE TABLE DDL definitions with syntax highlighting and one-tap copy."
+      ></app-feature-card>
+    </div>
+  </section>
+
+  <!-- Category 4: Server Telemetry & Security -->
+  <section class="feature-category-section">
+    <div class="category-title">
+      <span class="material-icons">monitoring</span>
+      <h2>Server Telemetry & Security</h2>
+    </div>
+    <div class="features-grid">
+      <app-feature-card
+        icon="speed"
+        title="Real-Time Server Process Monitor"
+        description="Live SHOW FULL PROCESSLIST telemetry displaying connected threads, users, host IPs, command states, execution durations, and active queries across your database instances."
+      ></app-feature-card>
+      <app-feature-card
+        icon="stop_circle"
+        title="One-Tap Process & Query Termination"
+        description="Terminate unresponsive or locking background threads directly from the monitor with administrative out-of-band KILL statements."
+      ></app-feature-card>
+      <app-feature-card
+        icon="gpp_maybe"
+        title="Destructive SQL Safeguards"
+        description="Intelligent query interceptor analyzes queries for destructive commands (DROP, TRUNCATE, unconstrained DELETE) and prompts for explicit confirmation before execution."
+      ></app-feature-card>
+      <app-feature-card
+        icon="translate"
+        title="Multi-Language Localization (EN, DE, ES, FR)"
+        description="Complete UI localization across English, German, Spanish, and French with automatic Android system locale detection and fallback."
+      ></app-feature-card>
+    </div>
+  </section>
+
+  <!-- Category 5: SQL Pulse Pro -->
+  <section class="feature-category-section">
+    <div class="category-title">
+      <span class="material-icons">workspace_premium</span>
+      <h2>SQL Pulse Pro</h2>
+    </div>
+    <div class="features-grid">
+      <app-feature-card
+        icon="insights"
+        title="Visual EXPLAIN Execution Plans"
+        description="Deep query profiling with full JSON execution plan tree hierarchy, cost node analysis, and query optimization recommendations."
+      ></app-feature-card>
+      <app-feature-card
+        icon="history_edu"
+        title="Transactional Table Grid CRUD"
+        description="Direct in-grid row editing, inline column value mutations, batch staging, and transactional atomic commit workflows."
+      ></app-feature-card>
+      <app-feature-card
+        icon="share"
+        title="Multi-Hop SSH Bastion Connections"
+        description="Route database traffic across complex multi-hop SSH bastion chains and jump-hosts without exposing ports to external networks."
+      ></app-feature-card>
+      <app-feature-card
+        icon="enhanced_encryption"
+        title="AES-256-GCM Encrypted Backups"
+        description="Export and import encrypted backup envelopes for connection profiles and saved query snippets using master passphrase protection."
+      ></app-feature-card>
+      <app-feature-card
+        icon="fingerprint"
+        title="Biometric App Lock"
+        description="Lock the database studio behind hardware-backed biometric authentication (fingerprint, facial recognition) with system PIN fallback."
+      ></app-feature-card>
+    </div>
+  </section>
+</section>
