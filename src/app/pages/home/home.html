@@ -19,7 +19,7 @@
       <div class="side-btn volume-btn"></div>
       <div class="camera-punch-hole"></div>
       <div class="screen-wrapper">
-        <img src="screenshots/05-sql-query-studio-explain.png" alt="SQL Pulse Query Studio and EXPLAIN View" class="hero-screen-img" />
+        <img [src]="themeService.isDarkMode() ? 'screenshots/query_studio_explain_dark.png' : 'screenshots/query_studio_explain_light.png'" alt="SQL Pulse Query Studio and EXPLAIN View" class="hero-screen-img" />
       </div>
       <div class="android-gesture-bar"></div>
     </div>

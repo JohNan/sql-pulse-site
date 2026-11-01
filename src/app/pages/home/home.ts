@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ThemeService } from '../../services/theme';
 import { Button } from '../../components/button/button';
 import { FeatureCard } from '../../components/feature-card/feature-card';
 import { ScreenshotShowcase } from '../../components/screenshot-showcase/screenshot-showcase';
@@ -14,4 +15,6 @@ import { QueryStudioPreview } from '../../components/query-studio-preview/query-
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {}
+export class Home {
+  public themeService = inject(ThemeService);
+}

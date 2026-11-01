@@ -2,6 +2,38 @@
   <div class="showcase-header">
     <h2>App Screenshot Gallery</h2>
     <p>Explore production screenshots of SQL Pulse across core database management workflows.</p>
+
+    <!-- Screenshot Theme Switcher -->
+    <div class="theme-mode-bar">
+      <span class="mode-label">Screenshot Theme:</span>
+      <div class="mode-toggle">
+        <button
+          type="button"
+          class="mode-btn"
+          [class.active]="activeThemeMode === 'light'"
+          (click)="setThemeMode('light')"
+        >
+          <span class="material-icons">light_mode</span> Light
+        </button>
+        <button
+          type="button"
+          class="mode-btn"
+          [class.active]="activeThemeMode === 'dark'"
+          (click)="setThemeMode('dark')"
+        >
+          <span class="material-icons">dark_mode</span> Dark
+        </button>
+        <button
+          type="button"
+          class="mode-btn"
+          [class.active]="activeThemeMode === 'auto'"
+          (click)="setThemeMode('auto')"
+          title="Match System/Site Theme"
+        >
+          <span class="material-icons">brightness_auto</span> Auto
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Category Pills Navigation -->
@@ -101,6 +133,9 @@
           }
           <h2>{{ activeModalItem.title }}</h2>
           <p>{{ activeModalItem.description }}</p>
+          <div class="modal-theme-toggle">
+            <span>Viewing Mode: <strong>{{ effectiveTheme | titlecase }} Theme</strong></span>
+          </div>
         </div>
       </div>
 
