@@ -1,0 +1,32 @@
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <img src="favicon.svg" alt="SQL Pulse App Logo" class="footer-logo-img" />
+      <span class="footer-brand-title">SQL Pulse — Database Studio for Android</span>
+    </div>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        >Home</a
+      >
+      <a routerLink="/features" routerLinkActive="active" ariaCurrentWhenActive="page">Features</a>
+      <a routerLink="/security" routerLinkActive="active" ariaCurrentWhenActive="page">Security</a>
+      <a routerLink="/privacy-policy" routerLinkActive="active" ariaCurrentWhenActive="page"
+        >Privacy Policy</a
+      >
+      <a routerLink="/terms" routerLinkActive="active" ariaCurrentWhenActive="page">Terms</a>
+      <a
+        href="https://ssh-client.nanzen.se/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cross-site-footer-link"
+      >
+        SSH Client for Android ↗
+      </a>
+    </nav>
+    <div class="footer-copyright">&copy; {{ currentYear }} Nanzen — SQL Pulse. All rights reserved.</div>
+  </div>
+</footer>

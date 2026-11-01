@@ -1,0 +1,53 @@
+<section class="security-page">
+  <div class="security-header">
+    <span class="page-badge">Zero-Trust Architecture</span>
+    <h1>Security & Data Privacy</h1>
+    <p>
+      SQL Pulse is engineered from the ground up with military-grade encryption, zero-middleman networking, and hardware-backed credential containment.
+    </p>
+  </div>
+
+  <div class="security-grid">
+    <app-feature-card
+      icon="lock"
+      title="Hardware-Backed Android Keystore (AES-256-GCM)"
+      description="All database connection credentials, SSH private keys, and passphrases are encrypted at rest using AES-256-GCM with keys anchored in hardware-backed Secure Elements or StrongBox Keymaster."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="hub"
+      title="Zero-Middleman Direct Architecture"
+      description="Database traffic travels directly from your Android device to your database or SSH bastion. There are no intermediate cloud proxies, query relays, or external SaaS telemetry servers logging your queries."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="vpn_lock"
+      title="SSH Bastion Tunneling & TOFU Host Verification"
+      description="Integrated direct-tcpip port forwarding isolates your database traffic within encrypted SSH channels. Strict Trust-On-First-Use (TOFU) host-key fingerprint checks prevent man-in-the-middle attacks."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="gpp_maybe"
+      title="Destructive Query Interception (DROP / TRUNCATE / DELETE)"
+      description="Semantic query inspection intercepts potentially destructive statements such as DROP DATABASE, DROP TABLE, TRUNCATE, or unconstrained mass DELETE queries, requiring explicit dual confirmation."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="fingerprint"
+      title="Biometric App Lock"
+      description="Protect production databases from unauthorized physical device access with mandatory biometric authentication (fingerprint, 3D facial recognition) with system PIN fallback."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="enhanced_encryption"
+      title="AES-256-GCM Encrypted Backup Envelopes"
+      description="Safely migrate saved connection profiles and query snippets between devices. Backup archives are encrypted with PBKDF2 key derivation and authenticated AES-256-GCM envelopes."
+    ></app-feature-card>
+
+    <app-feature-card
+      icon="system_update"
+      title="Google Play In-App Updates"
+      description="Automated update management delivers critical security patches immediately via Google Play In-App Updates (Priority 4-5) or silently in the background for regular releases."
+    ></app-feature-card>
+  </div>
+</section>

@@ -1,0 +1,455 @@
+<section class="query-studio-section">
+  <div class="studio-header">
+    <div class="studio-badge">
+      <span class="material-icons">terminal</span>
+      <span>Live Studio Simulator</span>
+    </div>
+    <h2>Interactive SQL Query Studio & EXPLAIN</h2>
+    <p>
+      Experience SQL Pulse's responsive desktop-grade query workspace right in your browser.
+      Test themes, 2D result grids, visual EXPLAIN execution trees, and schema DDL inspection.
+    </p>
+
+    <!-- Controls Toolbar -->
+    <div class="controls-toolbar">
+      <!-- Mode Tabs -->
+      <div class="mode-tabs" role="tablist" aria-label="Query Studio Inspection Modes">
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'results'"
+          (click)="setTab('results')"
+          role="tab"
+          [attr.aria-selected]="activeTab === 'results'"
+          id="tab-results"
+          aria-controls="panel-results"
+        >
+          <span class="material-icons">table_chart</span>
+          <span>2D Result Grid</span>
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'explain'"
+          (click)="setTab('explain')"
+          role="tab"
+          [attr.aria-selected]="activeTab === 'explain'"
+          id="tab-explain"
+          aria-controls="panel-explain"
+        >
+          <span class="material-icons">account_tree</span>
+          <span>Visual EXPLAIN Plan</span>
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'ddl'"
+          (click)="setTab('ddl')"
+          role="tab"
+          [attr.aria-selected]="activeTab === 'ddl'"
+          id="tab-ddl"
+          aria-controls="panel-ddl"
+        >
+          <span class="material-icons">schema</span>
+          <span>DDL & Schema</span>
+        </button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <div class="theme-switcher" role="radiogroup" aria-label="Studio Theme Palettes">
+        <span class="theme-label">Studio Palette:</span>
+        <div class="theme-pills">
+          @for (theme of themes; track theme.id) {
+            <button
+              type="button"
+              class="theme-pill"
+              [class.active]="activeThemeId === theme.id"
+              (click)="setTheme(theme.id)"
+              role="radio"
+              [attr.aria-checked]="activeThemeId === theme.id"
+              [title]="theme.name"
+            >
+              <span class="swatch" [style.background-color]="theme.accent"></span>
+              <span>{{ theme.name }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulated Studio Frame -->
+  <div
+    class="studio-frame"
+    [style.--studio-bg]="currentTheme.bg"
+    [style.--studio-surface]="currentTheme.surface"
+    [style.--studio-header]="currentTheme.header"
+    [style.--studio-text]="currentTheme.text"
+    [style.--studio-muted]="currentTheme.muted"
+    [style.--studio-accent]="currentTheme.accent"
+    [style.--studio-amber]="currentTheme.amber"
+    [style.--studio-emerald]="currentTheme.emerald"
+    [style.--studio-border]="currentTheme.border"
+  >
+    <!-- Studio Window Titlebar -->
+    <div class="studio-titlebar">
+      <div class="window-controls">
+        <span class="control close"></span>
+        <span class="control minimize"></span>
+        <span class="control maximize"></span>
+      </div>
+      <div class="window-title">
+        <span class="material-icons db-icon">storage</span>
+        <span class="title-text">prod-db-01 • mysql-core wire v10 • ssl: tls_v1_3 • lat: 14ms</span>
+      </div>
+      <div class="window-badges">
+        <span class="connection-badge"><span class="pulse-dot"></span> SSH TUNNEL ACTIVE</span>
+      </div>
+    </div>
+
+    <!-- SQL Editor Box -->
+    <div class="sql-editor-container">
+      <div class="editor-gutter">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+      </div>
+      <div class="editor-code">
+        <div class="code-line">
+          <span class="token-keyword">SELECT</span>
+          <span class="token-ident"> o.id</span><span class="token-punct">,</span>
+          <span class="token-ident"> c.email</span><span class="token-punct">,</span>
+          <span class="token-ident"> o.total_sek</span><span class="token-punct">,</span>
+          <span class="token-ident"> o.status</span><span class="token-punct">,</span>
+          <span class="token-ident"> o.payload</span>
+        </div>
+        <div class="code-line">
+          <span class="token-keyword">FROM</span>
+          <span class="token-ident"> orders</span>
+          <span class="token-ident"> o</span>
+          <span class="token-keyword"> JOIN</span>
+          <span class="token-ident"> customers</span>
+          <span class="token-ident"> c</span>
+          <span class="token-keyword"> ON</span>
+          <span class="token-ident"> c.id</span>
+          <span class="token-operator"> =</span>
+          <span class="token-ident"> o.customer_id</span>
+        </div>
+        <div class="code-line">
+          <span class="token-keyword">WHERE</span>
+          <span class="token-ident"> o.status</span>
+          <span class="token-operator"> =</span>
+          <span class="token-string"> 'PAID'</span>
+          <span class="token-keyword"> ORDER BY</span>
+          <span class="token-ident"> o.created_at</span>
+          <span class="token-keyword"> DESC</span>
+          <span class="token-keyword"> LIMIT</span>
+          <span class="token-number"> 4</span><span class="token-punct">;</span>
+        </div>
+      </div>
+      <div class="editor-actions">
+        <button type="button" class="run-btn" title="Execute Query (Ctrl+Enter)">
+          <span class="material-icons">play_arrow</span>
+          <span>Execute</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Panels Container -->
+    <div class="studio-body">
+      <!-- 1. Results Grid Tab -->
+      @if (activeTab === 'results') {
+        <div
+          class="tab-content results-content"
+          role="tabpanel"
+          id="panel-results"
+          aria-labelledby="tab-results"
+          tabindex="0"
+        >
+          <div class="table-responsive">
+            <table class="studio-grid" aria-label="Query Result Grid">
+              <thead>
+                <tr>
+                  <th scope="col" class="row-num-col">#</th>
+                  <th scope="col" class="align-right">
+                    <div class="th-content">
+                      <span class="col-name">id</span>
+                      <span class="chip-badge chip-pk">PK</span>
+                      <span class="col-type">bigint</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="align-left">
+                    <div class="th-content">
+                      <span class="col-name">email</span>
+                      <span class="chip-badge chip-fk">FK</span>
+                      <span class="col-type">varchar</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="align-right">
+                    <div class="th-content">
+                      <span class="col-name">total_sek</span>
+                      <span class="col-type">decimal</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="align-center">
+                    <div class="th-content">
+                      <span class="col-name">status</span>
+                      <span class="col-type">varchar</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="align-left">
+                    <div class="th-content">
+                      <span class="col-name">payload</span>
+                      <span class="col-type">json</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of tableRows; track row.id; let idx = $index) {
+                  <tr>
+                    <td class="row-num-col">{{ idx + 1 }}</td>
+                    <td class="align-right mono-num font-bold">{{ row.id }}</td>
+                    <td class="align-left mono-text">{{ row.email }}</td>
+                    <td class="align-right mono-num">{{ row.total_sek }}</td>
+                    <td class="align-center">
+                      <span class="status-pill status-paid">{{ row.status }}</span>
+                    </td>
+                    <td class="align-left mono-json">
+                      <span class="json-chip">{{ row.payload }}</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="studio-status-bar">
+            <div class="status-left">
+              <span class="status-indicator"></span>
+              <span class="status-metrics">14 ms • 4 rows • Wire Protocol v10 • SSH Bastion: prod-db-01</span>
+            </div>
+            <div class="status-right">
+              <span>Encoding: utf8mb4</span>
+              <span>Buffer: OK</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- 2. Visual EXPLAIN Plan Tab -->
+      @if (activeTab === 'explain') {
+        <div
+          class="tab-content explain-content"
+          role="tabpanel"
+          id="panel-explain"
+          aria-labelledby="tab-explain"
+          tabindex="0"
+        >
+          <div class="explain-summary-bar">
+            <div class="summary-metric">
+              <span class="metric-label">Execution Strategy</span>
+              <span class="metric-val">Nested Loop (Indexed)</span>
+            </div>
+            <div class="summary-metric">
+              <span class="metric-label">Total Query Cost</span>
+              <span class="metric-val accent">1.77</span>
+            </div>
+            <div class="summary-metric">
+              <span class="metric-label">Estimated Rows</span>
+              <span class="metric-val emerald">4</span>
+            </div>
+            <div class="summary-metric">
+              <span class="metric-label">Access Method</span>
+              <span class="metric-val">ref + eq_ref</span>
+            </div>
+          </div>
+
+          <div class="explain-tree-container">
+            <!-- Root Node -->
+            <div class="tree-node root-node">
+              <div class="node-card">
+                <div class="node-header">
+                  <span class="node-type">Nested Loop Inner Join</span>
+                  <span class="node-cost-badge">Cost: 1.77</span>
+                </div>
+                <div class="node-desc">Combines matching rows from orders and customers on foreign key constraint</div>
+              </div>
+
+              <!-- Children Container -->
+              <div class="tree-branches">
+                <!-- Child Node 1 -->
+                <div class="tree-node-branch">
+                  <div class="branch-connector"></div>
+                  <div class="node-card leaf-card">
+                    <div class="node-header">
+                      <span class="table-name">orders (o)</span>
+                      <span class="access-badge index-range">INDEX RANGE</span>
+                    </div>
+                    <div class="node-title">Index Lookup on orders (idx_orders_status_created)</div>
+                    <div class="node-metrics-grid">
+                      <div class="metric-item">
+                        <span class="k">Key:</span>
+                        <span class="v">idx_orders_status_created</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Cost:</span>
+                        <span class="v">1.42</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Rows:</span>
+                        <span class="v">4</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Filtered:</span>
+                        <span class="v">100.00%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Child Node 2 -->
+                <div class="tree-node-branch">
+                  <div class="branch-connector"></div>
+                  <div class="node-card leaf-card">
+                    <div class="node-header">
+                      <span class="table-name">customers (c)</span>
+                      <span class="access-badge primary-key">PRIMARY KEY</span>
+                    </div>
+                    <div class="node-title">Eq_ref on customers (PRIMARY)</div>
+                    <div class="node-metrics-grid">
+                      <div class="metric-item">
+                        <span class="k">Key:</span>
+                        <span class="v">PRIMARY (id)</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Cost:</span>
+                        <span class="v">0.35</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Rows:</span>
+                        <span class="v">1</span>
+                      </div>
+                      <div class="metric-item">
+                        <span class="k">Filtered:</span>
+                        <span class="v">100.00%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-status-bar">
+            <div class="status-left">
+              <span class="status-indicator"></span>
+              <span class="status-metrics">Total Cost: 1.77 • Estimated Rows: 4 • Join Type: eq_ref • Engine: InnoDB</span>
+            </div>
+            <div class="status-right">
+              <span>EXPLAIN FORMAT=TREE</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- 3. DDL & Schema Tab -->
+      @if (activeTab === 'ddl') {
+        <div
+          class="tab-content ddl-content"
+          role="tabpanel"
+          id="panel-ddl"
+          aria-labelledby="tab-ddl"
+          tabindex="0"
+        >
+          <div class="ddl-inspector-layout">
+            <div class="ddl-editor-pane">
+              <div class="ddl-code-header">
+                <span class="material-icons">terminal</span>
+                <span>SHOW CREATE TABLE orders;</span>
+              </div>
+              <pre class="ddl-pre"><code><span class="ddl-kw">CREATE TABLE</span> <span class="ddl-ident">`orders`</span> (
+  <span class="ddl-ident">`id`</span> <span class="ddl-type">bigint unsigned</span> <span class="ddl-kw">NOT NULL AUTO_INCREMENT</span>,
+  <span class="ddl-ident">`customer_id`</span> <span class="ddl-type">bigint unsigned</span> <span class="ddl-kw">NOT NULL</span>,
+  <span class="ddl-ident">`total_sek`</span> <span class="ddl-type">decimal(10,2)</span> <span class="ddl-kw">NOT NULL DEFAULT</span> <span class="ddl-str">'0.00'</span>,
+  <span class="ddl-ident">`status`</span> <span class="ddl-type">varchar(32)</span> <span class="ddl-kw">NOT NULL DEFAULT</span> <span class="ddl-str">'PENDING'</span>,
+  <span class="ddl-ident">`payload`</span> <span class="ddl-type">json</span> <span class="ddl-kw">DEFAULT NULL</span>,
+  <span class="ddl-ident">`created_at`</span> <span class="ddl-type">timestamp</span> <span class="ddl-kw">NOT NULL DEFAULT CURRENT_TIMESTAMP</span>,
+  <span class="ddl-kw">PRIMARY KEY</span> (<span class="ddl-ident">`id`</span>),
+  <span class="ddl-kw">KEY</span> <span class="ddl-ident">`idx_orders_status_created`</span> (<span class="ddl-ident">`status`</span>, <span class="ddl-ident">`created_at`</span> <span class="ddl-kw">DESC</span>),
+  <span class="ddl-kw">CONSTRAINT</span> <span class="ddl-ident">`fk_orders_customer`</span> <span class="ddl-kw">FOREIGN KEY</span> (<span class="ddl-ident">`customer_id`</span>) <span class="ddl-kw">REFERENCES</span> <span class="ddl-ident">`customers`</span> (<span class="ddl-ident">`id`</span>) <span class="ddl-kw">ON DELETE RESTRICT</span>
+) <span class="ddl-kw">ENGINE</span>=InnoDB <span class="ddl-kw">DEFAULT CHARSET</span>=utf8mb4 <span class="ddl-kw">COLLATE</span>=utf8mb4_unicode_ci;</code></pre>
+            </div>
+
+            <div class="ddl-chips-pane">
+              <h4>Schema Metadata & Indexes</h4>
+              <div class="chips-stack">
+                <div class="meta-card pk-card">
+                  <span class="material-icons">key</span>
+                  <div class="meta-info">
+                    <span class="meta-label">PRIMARY KEY</span>
+                    <code>PRIMARY KEY (id)</code>
+                  </div>
+                </div>
+
+                <div class="meta-card idx-card">
+                  <span class="material-icons">bolt</span>
+                  <div class="meta-info">
+                    <span class="meta-label">SECONDARY INDEX</span>
+                    <code>KEY idx_orders_status_created (status, created_at DESC)</code>
+                  </div>
+                </div>
+
+                <div class="meta-card fk-card">
+                  <span class="material-icons">link</span>
+                  <div class="meta-info">
+                    <span class="meta-label">FOREIGN KEY</span>
+                    <code>CONSTRAINT fk_orders_customer (customer_id -&gt; customers.id)</code>
+                  </div>
+                </div>
+
+                <div class="meta-card engine-card">
+                  <span class="material-icons">dns</span>
+                  <div class="meta-info">
+                    <span class="meta-label">STORAGE ENGINE</span>
+                    <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-status-bar">
+            <div class="status-left">
+              <span class="status-indicator"></span>
+              <span class="status-metrics">Table: orders • Collation: utf8mb4_unicode_ci • Engine: InnoDB</span>
+            </div>
+            <div class="status-right">
+              <span>DDL Ready</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Docked SQL Symbol Bar -->
+    <div class="sql-symbol-bar" aria-label="Docked SQL Symbol Bar">
+      <span class="symbol-bar-title">SQL Symbols:</span>
+      <div class="symbol-scroll">
+        @for (sym of sqlSymbols; track sym) {
+          <button
+            type="button"
+            class="symbol-chip"
+            [class.inserted]="lastInsertedSymbol === sym"
+            (click)="insertSymbol(sym)"
+            [title]="'Insert ' + sym + ' token'"
+          >
+            {{ sym }}
+          </button>
+        }
+      </div>
+      @if (lastInsertedSymbol) {
+        <span class="symbol-feedback">Added {{ lastInsertedSymbol }}</span>
+      }
+    </div>
+  </div>
+</section>

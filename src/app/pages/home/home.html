@@ -1,0 +1,109 @@
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="hero-app-badge">
+      <img src="favicon.svg" alt="SQL Pulse App Logo" class="hero-badge-logo" />
+      <span>Native Android MySQL &amp; MariaDB Studio</span>
+    </div>
+    <h1>SQL Pulse — Database Studio</h1>
+    <p>
+      High-density SQL query studio, visual EXPLAIN analyzer, 2D table data grid, real-time process monitor, and SSH bastion tunneling—engineered natively with Material 3 and a pure-Kotlin Wire Protocol v10 engine.
+    </p>
+    <app-button variant="primary" href="https://play.google.com/store/apps/details?id=com.johnan.mysqlclient" target="_blank">
+      <span class="material-icons">get_app</span>
+      <span>Download on Google Play</span>
+    </app-button>
+  </div>
+  <div class="hero-mockup">
+    <div class="hero-phone-frame">
+      <div class="side-btn power-btn"></div>
+      <div class="side-btn volume-btn"></div>
+      <div class="camera-punch-hole"></div>
+      <div class="screen-wrapper">
+        <img src="screenshots/05-sql-query-studio-explain.png" alt="SQL Pulse Query Studio and EXPLAIN View" class="hero-screen-img" />
+      </div>
+      <div class="android-gesture-bar"></div>
+    </div>
+  </div>
+</section>
+
+<section class="value-prop-section">
+  <h2>Why Choose SQL Pulse</h2>
+  <div class="features-grid">
+    <app-feature-card
+      icon="code"
+      title="Interactive SQL Query Studio"
+      description="Author queries with real-time SQL syntax highlighting, docked SQL symbol bar, parameterized snippets, and instant multi-statement execution."
+    ></app-feature-card>
+    <app-feature-card
+      icon="account_tree"
+      title="Visual EXPLAIN Plan Analyzer"
+      description="Inspect execution trees, index access paths, table scans, join costs, and filtered row ratios with color-coded efficiency badges."
+    ></app-feature-card>
+    <app-feature-card
+      icon="table_chart"
+      title="2D Table Data Grid & CRUD"
+      description="Fluid two-dimensional tabular data grid with PK/FK indicator chips, inline cell editing, column sorting, pagination, and transactional UPDATEs."
+    ></app-feature-card>
+    <app-feature-card
+      icon="schema"
+      title="Visual Schema & DDL Inspector"
+      description="Browse databases, tables, views, stored procedures, triggers, column data types, foreign keys, and live SHOW CREATE TABLE DDL."
+    ></app-feature-card>
+    <app-feature-card
+      icon="monitor_heart"
+      title="Real-Time Process Monitor"
+      description="Monitor active server threads (SHOW FULL PROCESSLIST), track query runtimes, spot connection spikes, and execute one-tap KILL QUERY commands."
+    ></app-feature-card>
+    <app-feature-card
+      icon="memory"
+      title="Pure-Kotlin Wire Protocol v10"
+      description="Zero-dependency, high-performance pure-Kotlin MySQL Client/Server Wire Protocol v10 engine supporting fast auth, TLS/SSL, and binary row decoding."
+    ></app-feature-card>
+    <app-feature-card
+      icon="vpn_lock"
+      title="SSH Bastion Port Forwarding"
+      description="Connect to remote isolated databases through SSH bastion jump hosts via integrated direct-tcpip port forwarding without exposing database ports."
+    ></app-feature-card>
+    <app-feature-card
+      icon="security"
+      title="Hardware Keystore & Biometrics"
+      description="Safeguard connection passwords, private keys, and SSH credentials with Android Keystore AES-256-GCM encryption and biometric unlock."
+    ></app-feature-card>
+    <app-feature-card
+      icon="gpp_maybe"
+      title="Destructive Query Safeguards"
+      description="Safety confirmation dialogs and transaction rollback warnings before executing destructive DROP, TRUNCATE, or unconstrained DELETE/UPDATE statements."
+    ></app-feature-card>
+    <app-feature-card
+      icon="file_download"
+      title="Background CSV, JSON & SQL Export"
+      description="Stream large query results and table dumps to CSV, JSON, and SQL INSERT files in the background without UI lag or memory exhaustion."
+    ></app-feature-card>
+    <app-feature-card
+      icon="enhanced_encryption"
+      title="Encrypted Cloud-Free Backups"
+      description="Export and import your entire connection registry and snippet library in AES-256-GCM encrypted backup files—100% private with zero cloud telemetry."
+    ></app-feature-card>
+    <app-feature-card
+      icon="star"
+      title="SQL Pulse Pro Toolkit"
+      description="Professional database toolkit unlocking multi-tab query sessions, EXPLAIN visual trees, server process monitor, SSH jump tunnels, and biometric security."
+    ></app-feature-card>
+  </div>
+</section>
+
+<!-- App Screenshot Gallery Component -->
+<app-screenshot-showcase></app-screenshot-showcase>
+
+<!-- Interactive SQL Query Studio Simulator Component -->
+<app-query-studio-preview></app-query-studio-preview>
+
+<section class="cta-section">
+  <h2>Ready to command your MySQL databases on Android?</h2>
+  <app-button variant="primary" href="https://play.google.com/store/apps/details?id=com.johnan.mysqlclient" target="_blank">
+    <span class="material-icons">android</span>
+    <span>Download on Google Play</span>
+  </app-button>
+  <br />
+  <a routerLink="/features" class="secondary-link">See all features</a>
+</section>

@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.johnan.mysqlclient",
+      "sha256_cert_fingerprints": [
+        "2D:75:F6:59:69:08:A0:74:25:A1:D1:6C:C7:E2:E5:64:E8:24:BA:CA:54:CD:B0:E3:3A:03:2B:06:C2:4F:15:DC"
+      ]
+    }
+  }
+]

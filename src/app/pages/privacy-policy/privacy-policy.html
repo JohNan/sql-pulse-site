@@ -1,0 +1,110 @@
+<article class="legal-content">
+  <h1>Privacy Policy for SQL Pulse - Database Studio</h1>
+  <p><strong>Last updated: November 1, 2026</strong></p>
+
+  <p>
+    This Privacy Policy describes how information is handled in <strong>SQL Pulse - Database Studio</strong>
+    (application ID <code>com.johnan.mysqlclient</code>, the "App"), developed and published by <strong>Nanzen</strong>.
+  </p>
+
+  <p>
+    We respect your privacy and are committed to protecting it. SQL Pulse is designed as an on-device developer utility
+    with zero reliance on external intermediary servers.
+  </p>
+
+  <section>
+    <h2>Information Collection and Storage</h2>
+    <p>
+      The App does <strong>not</strong> directly collect, store, transmit, or harvest any personally identifiable information (PII).
+      We do not require you to create an account, register an email address, or log into any Nanzen cloud service to use the App.
+    </p>
+
+    <h3>On-Device Credential Security</h3>
+    <p>
+      All database connection profiles, hostnames, port numbers, usernames, database passwords, and SSH private keys or passphrases
+      are stored strictly on your local device. Credentials are encrypted at rest using <strong>AES-256-GCM</strong> authenticated encryption,
+      with cryptographic keys securely anchored in the hardware-backed <strong>Android Keystore</strong> (Secure Element / StrongBox Keymaster).
+      Your credentials never leave your device and are never transmitted to Nanzen or any third party.
+    </p>
+
+    <h3>Direct Network Architecture</h3>
+    <p>
+      When executing queries or inspecting schemas, the App establishes direct, encrypted socket connections from your Android device
+      to your configured MySQL/MariaDB database server or SSH bastion jump-host. There are no intermediate proxy servers, cloud relays,
+      or Nanzen infrastructure processing or observing your SQL queries, schema metadata, or result sets.
+    </p>
+  </section>
+
+  <section>
+    <h2>Third-Party Services</h2>
+    <p>
+      To facilitate software licensing, in-app billing, stability diagnostics, and operational performance, the App integrates select
+      third-party SDKs provided by Google. These third-party services may collect pseudonymized device identifiers and telemetry in accordance
+      with their respective privacy policies:
+    </p>
+    <ul>
+      <li>
+        <strong>Google Play Services & Google Play Billing:</strong> Used to manage app licensing, In-App Updates, and Google Play Pro tier transactions.
+      </li>
+      <li>
+        <strong>Firebase Crashlytics:</strong> Used to collect crash diagnostics, stack traces, and device hardware specifications to fix software defects.
+      </li>
+      <li>
+        <strong>Firebase Analytics:</strong> Used to collect anonymized usage events and engagement metrics to improve user interface workflows.
+      </li>
+    </ul>
+    <p>
+      These services may record technical metadata such as your device IP address, operating system version, device model, and timestamped error logs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cookies and Local Storage</h2>
+    <p>
+      The mobile application itself does not use browser HTTP cookies. On-device settings and preferences are stored locally using Android Jetpack DataStore
+      and encrypted Room SQLite databases. Our marketing website may use minimal functional local storage for theme selection (Light/Dark mode).
+    </p>
+  </section>
+
+  <section>
+    <h2>Security</h2>
+    <p>
+      We value your trust in choosing SQL Pulse for managing critical infrastructure. We implement industry-standard security safeguards, including
+      hardware-backed Android Keystore cryptography, biometric authentication locks, strict SSH host-key verification (TOFU), and destructive SQL query
+      interception. However, please remember that database security also depends on keeping your device secure and configuring appropriate database user privileges.
+    </p>
+  </section>
+
+  <section>
+    <h2>Links to Other Sites</h2>
+    <p>
+      The App or marketing site may contain links to third-party websites or services (e.g., external documentation or Google Play).
+      If you click on a third-party link, you will be directed to that external site. We have no control over and assume no responsibility
+      for the content or privacy practices of external sites.
+    </p>
+  </section>
+
+  <section>
+    <h2>Children's Privacy</h2>
+    <p>
+      SQL Pulse is a professional database management utility intended for developers and system administrators. It is not directed at children under the age of 13.
+      We do not knowingly collect personal information from children.
+    </p>
+  </section>
+
+  <section>
+    <h2>Changes to This Privacy Policy</h2>
+    <p>
+      We may update our Privacy Policy periodically to reflect new software capabilities, regulatory requirements, or Google Play policy updates.
+      Any revisions will be published on this page with an updated effective date.
+    </p>
+  </section>
+
+  <section>
+    <h2>Contact Us</h2>
+    <p>If you have any questions or concerns regarding this Privacy Policy or data security in SQL Pulse, please contact us at:</p>
+    <p id="contact-email">
+      <a href="mailto:info&#64;nanzen.se">info&#64;nanzen.se</a>
+    </p>
+  </section>
+</article>
