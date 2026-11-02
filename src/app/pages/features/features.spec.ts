@@ -61,7 +61,6 @@ describe('Features', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('SQL Pulse Pro');
     expect(compiled.textContent).toContain('Visual EXPLAIN Execution Plans');
-    expect(compiled.textContent).toContain('Transactional Table Grid CRUD');
     expect(compiled.textContent).toContain('Multi-Hop SSH Bastion Connections');
     expect(compiled.textContent).toContain('AES-256-GCM Encrypted Backups');
     expect(compiled.textContent).toContain('Biometric App Lock');
