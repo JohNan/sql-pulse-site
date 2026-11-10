@@ -34,6 +34,7 @@ describe('Features', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('Interactive SQL Query Studio');
     expect(compiled.textContent).toContain('Syntax-Highlighted SQL Editor & Symbol Bar');
+    expect(compiled.textContent).toContain('Multi-Tab Worksheets & Interactive Transactions');
     expect(compiled.textContent).toContain('Visual EXPLAIN Execution Plan Tree');
     expect(compiled.textContent).toContain('Parameterized SQL Snippets & History');
     expect(compiled.textContent).toContain('Out-of-Band Query Cancellation');
@@ -45,6 +46,7 @@ describe('Features', () => {
     expect(compiled.textContent).toContain('2D Table Data Grid & Schema Inspector');
     expect(compiled.textContent).toContain('2D Monospace Table Data Grid');
     expect(compiled.textContent).toContain('Transactional Row CRUD & Inline Editing');
+    expect(compiled.textContent).toContain('Interactive ER Diagram Canvas');
     expect(compiled.textContent).toContain('Visual Schema & DDL Inspector');
   });
 
@@ -61,6 +63,7 @@ describe('Features', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('SQL Pulse Pro');
     expect(compiled.textContent).toContain('Visual EXPLAIN Execution Plans');
+    expect(compiled.textContent).toContain('JSON & SQL INSERT Data Exports');
     expect(compiled.textContent).toContain('Multi-Hop SSH Bastion Connections');
     expect(compiled.textContent).toContain('AES-256-GCM Encrypted Backups');
     expect(compiled.textContent).toContain('Biometric App Lock');
