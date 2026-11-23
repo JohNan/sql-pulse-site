@@ -30,7 +30,7 @@ export class SeoService {
         const title = data['title'] || 'SQL Pulse — Android SQL Database Studio';
         const description =
           data['description'] ||
-          'Material 3 Android SQL database client and management studio with interactive Query Studio, visual EXPLAIN, 2D data grid, schema inspector, and SSH bastion tunneling.';
+          'Material 3 Android MySQL, MariaDB, and PostgreSQL client and management studio with interactive Query Studio, visual EXPLAIN, 2D data grid, 3-tier schema inspector, and SSH bastion tunneling.';
 
         this.titleService.setTitle(title);
 

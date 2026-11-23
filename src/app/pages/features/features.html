@@ -2,7 +2,7 @@
   <div class="features-header">
     <span class="page-badge">Studio Architecture</span>
     <h1>SQL Pulse Feature Matrix</h1>
-    <p>Discover the zero-overhead, production-grade capabilities of SQL Pulse — the premier Android MySQL and MariaDB database management studio.</p>
+    <p>Discover the zero-overhead, production-grade capabilities of SQL Pulse — the premier Android MySQL, MariaDB, and PostgreSQL database management studio.</p>
   </div>
 
   <!-- Category 1: Native Wire Protocol & Connectivity -->
@@ -18,9 +18,14 @@
         description="Zero-dependency pure-Kotlin (:mysql-core) implementation of MySQL Protocol 10 with fast auth (mysql_native_password, caching_sha2_password RSA/AES), binary/text row parsing, and coroutine socket I/O without heavy JDBC overhead."
       ></app-feature-card>
       <app-feature-card
+        icon="dns"
+        title="Native PostgreSQL Wire Protocol v3.0"
+        description="Zero-dependency pure-Kotlin (:postgres-core) PostgreSQL v3.0 engine featuring SCRAM-SHA-256 and SCRAM-SHA-256-PLUS (tls-server-end-point channel binding), SSLRequest TLS with SNI, custom startupOptions, and Simple/Extended Query streaming."
+      ></app-feature-card>
+      <app-feature-card
         icon="vpn_lock"
         title="Flexible Direct TCP & SSL/TLS"
-        description="Connect directly to MySQL 5.7, 8.0+, and MariaDB servers over standard TCP sockets with full TLS handshake verification, custom CA certificates, and strict SSL encryption modes."
+        description="Connect directly to MySQL 5.7/8.0+, MariaDB, and PostgreSQL 12+ servers over TCP sockets with TLS/SNI verification, custom CA certificates, and strict SSL encryption modes."
       ></app-feature-card>
       <app-feature-card
         icon="alt_route"
@@ -45,32 +50,32 @@
       <app-feature-card
         icon="code"
         title="Syntax-Highlighted SQL Editor & Symbol Bar"
-        description="Monospace SQL editor with real-time keyword highlighting, docked SQL symbol toolbar (SELECT, WHERE, JOIN, LIMIT, *), query history bookmarks, and auto-formatting."
+        description="Monospace SQL editor with dialect-aware highlighting (backticks for MySQL, double-quoted identifiers and JSONB operators for PostgreSQL), docked symbol toolbar, query history, and snippets."
       ></app-feature-card>
       <app-feature-card
         icon="tab"
         title="Multi-Tab Worksheets & Interactive Transactions"
-        description="Open unlimited concurrent SQL worksheet tabs without artificial caps. Execute interactive transactions (BEGIN, COMMIT, ROLLBACK) with state indicators and inspect individual rows in a dedicated clickable row inspector."
+        description="Open unlimited concurrent SQL worksheet tabs without artificial caps. Execute BEGIN, COMMIT, and ROLLBACK transactions with FAILED transaction state recovery and clickable row inspection."
       ></app-feature-card>
       <app-feature-card
         icon="account_tree"
         title="Visual EXPLAIN Execution Plan Tree"
-        description="Interactive tree diagram of MySQL EXPLAIN FORMAT=JSON execution plans. Instantly inspect query cost, scan types (ALL, index, range, ref), row filtering percentages, and index bottlenecks."
+        description="Interactive indented plan trees from MySQL EXPLAIN FORMAT=JSON and PostgreSQL EXPLAIN (FORMAT JSON). Inspect query costs, scan types (ALL, index, Seq Scan, Index Scan), and bottleneck warnings."
       ></app-feature-card>
       <app-feature-card
         icon="bookmark"
         title="Parameterized SQL Snippets & History"
-        description="Save frequent database scripts as reusable parameterized snippets with prompt variables. Search query execution history with timestamped latency metrics and row counts."
+        description="Save frequent MySQL & PostgreSQL scripts as engine-filtered parameterized snippets with prompt variables and search timestamped query execution history."
       ></app-feature-card>
       <app-feature-card
         icon="cancel"
         title="Out-of-Band Query Cancellation"
-        description="Dedicated secondary management socket lets you issue instant KILL QUERY commands to abort stuck or runaway queries without tearing down your primary session."
+        description="Dedicated control channel cancels running queries cleanly via MySQL KILL QUERY or PostgreSQL pg_cancel_backend and wire CancelRequest without dropping your primary session."
       ></app-feature-card>
       <app-feature-card
         icon="file_download"
         title="Background Export to CSV, JSON & SQL"
-        description="Stream query result sets directly into CSV files for free in the background, or export to JSON and SQL INSERT formats with Pro, using Android DownloadManager and native system share sheets."
+        description="Stream query result sets directly into CSV files for free in the background, or export to JSON and dialect-accurate MySQL/PostgreSQL SQL INSERT statements with Pro."
       ></app-feature-card>
     </div>
   </section>
@@ -85,22 +90,22 @@
       <app-feature-card
         icon="grid_on"
         title="2D Monospace Table Data Grid"
-        description="High-performance virtualized 2D grid with bidirectional scrolling, sticky column headers, pinned primary key columns, and pill badges for PK, FK, NULL, JSON, and BLOB values."
+        description="High-performance virtualized 2D grid with bidirectional scrolling, sticky column headers, pinned keys, read-only view/matview mode, and pill badges for PK, ID, FK, NULL, JSONB, and BLOB."
       ></app-feature-card>
       <app-feature-card
         icon="edit_note"
         title="Transactional Row CRUD & Inline Editing"
-        description="Tap-to-edit cell values with pending visual change indicators, new row insertion, record deletion, and explicit transactional COMMIT / ROLLBACK confirmation safety."
+        description="Tap-to-edit cell values with pending SQL preview, row insertion/deletion, PostgreSQL keyless single-row edits via ctid, and explicit transactional COMMIT / ROLLBACK safety."
       ></app-feature-card>
       <app-feature-card
         icon="account_tree"
         title="Interactive ER Diagram Canvas"
-        description="Visualize entity relationships and foreign key topologies on an interactive, zoomable ER diagram canvas—included 100% free with zero ads or table count limits."
+        description="Visualize schema relationships and foreign key topologies on an interactive, zoomable ER diagram canvas—included 100% free with zero ads or table count limits."
       ></app-feature-card>
       <app-feature-card
         icon="schema"
         title="Visual Schema & DDL Inspector"
-        description="Browse relational tables, views, stored routines, indexes, and foreign keys. Design new tables with the visual CREATE TABLE DDL designer and inspect auto-generated SQL definitions with one-tap copy."
+        description="Navigate 3-tier PostgreSQL Database -> Schema -> Object trees (including Materialized Views) and MySQL databases, design tables visually, and copy dialect-accurate CREATE TABLE DDL."
       ></app-feature-card>
     </div>
   </section>
@@ -115,12 +120,12 @@
       <app-feature-card
         icon="speed"
         title="Real-Time Server Process Monitor"
-        description="Live SHOW FULL PROCESSLIST telemetry displaying connected threads, users, host IPs, command states, execution durations, and active queries across your database instances."
+        description="Live SHOW FULL PROCESSLIST & performance_schema telemetry for MySQL/MariaDB, plus pg_stat_activity, pg_locks, pg_stat_statements, server settings, and roles for PostgreSQL."
       ></app-feature-card>
       <app-feature-card
         icon="stop_circle"
         title="One-Tap Process & Query Termination"
-        description="Terminate unresponsive or locking background threads directly from the monitor with administrative out-of-band KILL statements."
+        description="Terminate or cancel blocking sessions directly from the monitor via MySQL KILL / KILL QUERY or PostgreSQL pg_cancel_backend & pg_terminate_backend."
       ></app-feature-card>
       <app-feature-card
         icon="gpp_maybe"

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface StudioTheme {
@@ -16,6 +16,7 @@ interface StudioTheme {
 }
 
 type InspectionMode = 'results' | 'explain' | 'ddl';
+type StudioEngine = 'mysql' | 'postgresql';
 
 @Component({
   selector: 'app-query-studio-preview',
@@ -25,7 +26,12 @@ type InspectionMode = 'results' | 'explain' | 'ddl';
   styleUrl: './query-studio-preview.scss',
 })
 export class QueryStudioPreview implements OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
   private symbolTimeoutId?: ReturnType<typeof setTimeout>;
+  engines: { id: StudioEngine; name: string; color: string }[] = [
+    { id: 'mysql', name: 'MySQL v10', color: '#52D1FA' },
+    { id: 'postgresql', name: 'PostgreSQL v3.0', color: '#818CF8' },
+  ];
   themes: StudioTheme[] = [
     {
       id: 'abyssal',
@@ -69,9 +75,11 @@ export class QueryStudioPreview implements OnDestroy {
   ];
 
   activeThemeId: 'abyssal' | 'nord' | 'daylight' = 'abyssal';
+  activeEngine: StudioEngine = 'mysql';
   activeTab: InspectionMode = 'results';
 
   sqlSymbols: string[] = ['SELECT', 'WHERE', 'JOIN', 'EXPLAIN', 'ORDER BY', 'LIMIT', '=', ';'];
+  pgSqlSymbols: string[] = ['SELECT', 'WHERE', 'JOIN', 'ILIKE', '->>', '::', 'EXPLAIN', ';'];
 
   tableRows = [
     {
@@ -104,6 +112,37 @@ export class QueryStudioPreview implements OnDestroy {
     },
   ];
 
+  pgTableRows = [
+    {
+      event_id: '904218',
+      source: 'checkout-ios',
+      amount_sek: '1,450.00',
+      status: 'COMMITTED',
+      payload: '{"currency":"SEK","vat":25}',
+    },
+    {
+      event_id: '904215',
+      source: 'checkout-android',
+      amount_sek: '3,890.50',
+      status: 'COMMITTED',
+      payload: '{"tier":"enterprise"}',
+    },
+    {
+      event_id: '904209',
+      source: 'billing-webhook',
+      amount_sek: '820.00',
+      status: 'COMMITTED',
+      payload: '{"promo":"SPRING26"}',
+    },
+    {
+      event_id: '904201',
+      source: 'admin-portal',
+      amount_sek: '2,110.00',
+      status: 'COMMITTED',
+      payload: '{"channel_binding":"tls"}',
+    },
+  ];
+
   lastInsertedSymbol = '';
 
   ngOnDestroy() {
@@ -116,12 +155,24 @@ export class QueryStudioPreview implements OnDestroy {
     return this.themes.find((t) => t.id === this.activeThemeId) || this.themes[0];
   }
 
+  get currentSqlSymbols(): string[] {
+    return this.activeEngine === 'postgresql' ? this.pgSqlSymbols : this.sqlSymbols;
+  }
+
+  setEngine(engine: StudioEngine) {
+    this.activeEngine = engine;
+    this.lastInsertedSymbol = '';
+    this.cdr.markForCheck();
+  }
+
   setTheme(themeId: 'abyssal' | 'nord' | 'daylight') {
     this.activeThemeId = themeId;
+    this.cdr.markForCheck();
   }
 
   setTab(tab: InspectionMode) {
     this.activeTab = tab;
+    this.cdr.markForCheck();
   }
 
   insertSymbol(symbol: string) {

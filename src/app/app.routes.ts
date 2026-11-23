@@ -7,7 +7,7 @@ export const routes: Routes = [
     data: {
       title: 'Home - SQL Pulse Database Studio',
       description:
-        'Material 3 Android SQL database client and management studio with interactive Query Studio, visual EXPLAIN, 2D data grid, schema inspector, and SSH bastion tunneling.',
+        'Material 3 Android MySQL, MariaDB & PostgreSQL database client with interactive Query Studio, visual EXPLAIN, 2D data grid, 3-tier schema inspector, and SSH bastion tunneling.',
     },
   },
   {
@@ -16,7 +16,7 @@ export const routes: Routes = [
     data: {
       title: 'Features - SQL Pulse Database Studio',
       description:
-        'Explore the pure-Kotlin MySQL/MariaDB wire protocol engine, visual EXPLAIN, 2D table grid, and server process monitoring.',
+        'Explore the pure-Kotlin MySQL/MariaDB v10 and PostgreSQL v3.0 wire protocol engines, visual EXPLAIN, 2D table grid, 3-tier schema explorer, and server process monitoring.',
     },
   },
   {

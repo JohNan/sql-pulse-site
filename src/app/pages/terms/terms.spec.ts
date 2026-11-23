@@ -22,7 +22,7 @@ describe('Terms', () => {
   it('should render SQL Pulse Terms of Service with effective date', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('Terms of Service for SQL Pulse - Database Studio');
-    expect(compiled.textContent).toContain('November 1, 2026');
+    expect(compiled.textContent).toContain('November 23, 2026');
     expect(compiled.textContent).toContain('Nanzen');
     expect(compiled.textContent).toContain('com.johnan.mysqlclient');
   });

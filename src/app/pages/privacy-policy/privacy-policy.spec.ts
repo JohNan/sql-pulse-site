@@ -26,7 +26,7 @@ describe('PrivacyPolicy', () => {
     expect(compiled.textContent).toContain('SQL Pulse - Database Studio');
     expect(compiled.textContent).toContain('com.johnan.mysqlclient');
     expect(compiled.textContent).toContain('Nanzen');
-    expect(compiled.textContent).toContain('November 1, 2026');
+    expect(compiled.textContent).toContain('November 23, 2026');
   });
 
   it('should detail on-device AES-256-GCM Keystore security and zero-middleman architecture', () => {

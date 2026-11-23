@@ -1,6 +1,6 @@
 <article class="legal-content">
   <h1>Terms of Service for SQL Pulse - Database Studio</h1>
-  <p class="last-updated">Last Updated: November 1, 2026</p>
+  <p class="last-updated">Last Updated: November 23, 2026</p>
 
   <section>
     <h2>1. Acceptance of Terms</h2>
@@ -20,8 +20,8 @@
     </p>
     <p>
       <strong>Data Safety & Backup Responsibility:</strong> You acknowledge that executing database statements (including but not limited to
-      <code>DROP</code>, <code>TRUNCATE</code>, <code>ALTER</code>, <code>DELETE</code>, and transactional commits) or terminating server threads
-      with <code>KILL</code> can result in irreversible data loss, index corruption, or application service downtime. You are solely responsible
+      <code>DROP</code>, <code>TRUNCATE</code>, <code>ALTER</code>, <code>DELETE</code>, and transactional commits) or cancelling/terminating server backends
+      with <code>KILL</code>, <code>pg_cancel_backend</code>, or <code>pg_terminate_backend</code> can result in irreversible data loss, index corruption, or application service downtime. You are solely responsible
       for maintaining independent, verified database backups prior to performing any administrative actions or schema mutations via SQL Pulse.
       Nanzen bears no responsibility for data loss or operational disruptions resulting from queries executed through the App.
     </p>
@@ -30,8 +30,8 @@
   <section>
     <h2>3. Pro Subscriptions & One-Time Purchases</h2>
     <p>
-      SQL Pulse offers optional premium features ("SQL Pulse Pro"), including Visual EXPLAIN execution trees, transactional table grid CRUD,
-      multi-hop SSH bastion connections, encrypted AES-256-GCM backups, and biometric locks.
+      SQL Pulse offers optional premium features ("SQL Pulse Pro"), including Visual EXPLAIN execution trees, JSON & SQL INSERT exports,
+      multi-hop SSH bastion connections, encrypted AES-256-GCM backups, and biometric app locks.
     </p>
     <p>
       All purchases, subscriptions, and transactions are processed securely through <strong>Google Play In-App Billing</strong> in accordance with
@@ -49,7 +49,7 @@
       non-infringement.
     </p>
     <p>
-      Nanzen does not warrant that the application will operate uninterrupted, error-free, or compatible with every MySQL/MariaDB server version,
+      Nanzen does not warrant that the application will operate uninterrupted, error-free, or compatible with every MySQL, MariaDB, or PostgreSQL server version,
       custom storage engine, or network topology.
     </p>
   </section>

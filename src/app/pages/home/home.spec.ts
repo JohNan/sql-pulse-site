@@ -26,8 +26,8 @@ describe('Home', () => {
   it('should render the hero section with SQL Pulse headline and badge', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('SQL Pulse — Database Studio');
-    expect(compiled.textContent).toContain('Native Android MySQL & MariaDB Studio');
-    expect(compiled.textContent).toContain('pure-Kotlin Wire Protocol v10');
+    expect(compiled.textContent).toContain('Native Android MySQL, MariaDB & PostgreSQL Studio');
+    expect(compiled.textContent).toContain('pure-Kotlin Wire Protocol v10 & v3.0');
   });
 
   it('should render the Play Store download link targeting com.johnan.mysqlclient', () => {
@@ -47,7 +47,7 @@ describe('Home', () => {
       '2D Table Data Grid & CRUD',
       'Visual Schema & DDL Inspector',
       'Real-Time Process Monitor',
-      'Pure-Kotlin Wire Protocol v10',
+      'Pure-Kotlin Wire Protocols (v10 & v3.0)',
       'SSH Bastion Port Forwarding',
       'Hardware Keystore & Biometrics',
       'Destructive Query Safeguards',

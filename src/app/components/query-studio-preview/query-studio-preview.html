@@ -55,6 +55,27 @@
         </button>
       </div>
 
+      <!-- Engine Switcher -->
+      <div class="theme-switcher" role="radiogroup" aria-label="Database Engine">
+        <span class="theme-label">Engine:</span>
+        <div class="theme-pills">
+          @for (eng of engines; track eng.id) {
+            <button
+              type="button"
+              class="theme-pill"
+              [class.active]="activeEngine === eng.id"
+              (click)="setEngine(eng.id)"
+              role="radio"
+              [attr.aria-checked]="activeEngine === eng.id"
+              [title]="eng.name"
+            >
+              <span class="swatch" [style.background-color]="eng.color"></span>
+              <span>{{ eng.name }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
       <!-- Theme Switcher -->
       <div class="theme-switcher" role="radiogroup" aria-label="Studio Theme Palettes">
         <span class="theme-label">Studio Palette:</span>
@@ -100,7 +121,13 @@
       </div>
       <div class="window-title">
         <span class="material-icons db-icon">storage</span>
-        <span class="title-text">prod-db-01 • mysql-core wire v10 • ssl: tls_v1_3 • lat: 14ms</span>
+        <span class="title-text">
+          @if (activeEngine === 'postgresql') {
+            analytics-pg-01 • postgres-core wire v3.0 • scram-sha-256-plus • lat: 19ms
+          } @else {
+            prod-db-01 • mysql-core wire v10 • ssl: tls_v1_3 • lat: 14ms
+          }
+        </span>
       </div>
       <div class="window-badges">
         <span class="connection-badge"><span class="pulse-dot"></span> SSH TUNNEL ACTIVE</span>
@@ -115,37 +142,66 @@
         <span>3</span>
       </div>
       <div class="editor-code">
-        <div class="code-line">
-          <span class="token-keyword">SELECT</span>
-          <span class="token-ident"> o.id</span><span class="token-punct">,</span>
-          <span class="token-ident"> c.email</span><span class="token-punct">,</span>
-          <span class="token-ident"> o.total_sek</span><span class="token-punct">,</span>
-          <span class="token-ident"> o.status</span><span class="token-punct">,</span>
-          <span class="token-ident"> o.payload</span>
-        </div>
-        <div class="code-line">
-          <span class="token-keyword">FROM</span>
-          <span class="token-ident"> orders</span>
-          <span class="token-ident"> o</span>
-          <span class="token-keyword"> JOIN</span>
-          <span class="token-ident"> customers</span>
-          <span class="token-ident"> c</span>
-          <span class="token-keyword"> ON</span>
-          <span class="token-ident"> c.id</span>
-          <span class="token-operator"> =</span>
-          <span class="token-ident"> o.customer_id</span>
-        </div>
-        <div class="code-line">
-          <span class="token-keyword">WHERE</span>
-          <span class="token-ident"> o.status</span>
-          <span class="token-operator"> =</span>
-          <span class="token-string"> 'PAID'</span>
-          <span class="token-keyword"> ORDER BY</span>
-          <span class="token-ident"> o.created_at</span>
-          <span class="token-keyword"> DESC</span>
-          <span class="token-keyword"> LIMIT</span>
-          <span class="token-number"> 4</span><span class="token-punct">;</span>
-        </div>
+        @if (activeEngine === 'postgresql') {
+          <div class="code-line">
+            <span class="token-keyword">SELECT</span>
+            <span class="token-ident"> "e"."event_id"</span><span class="token-punct">,</span>
+            <span class="token-ident"> "e"."payload"</span><span class="token-operator">-&gt;&gt;</span><span class="token-string">'source'</span>
+            <span class="token-keyword"> AS</span>
+            <span class="token-ident"> source</span><span class="token-punct">,</span>
+            <span class="token-ident"> "e"."amount_sek"</span><span class="token-punct">,</span>
+            <span class="token-ident"> "e"."status"</span>
+          </div>
+          <div class="code-line">
+            <span class="token-keyword">FROM</span>
+            <span class="token-ident"> "analytics"."events"</span>
+            <span class="token-keyword"> AS</span>
+            <span class="token-ident"> "e"</span>
+          </div>
+          <div class="code-line">
+            <span class="token-keyword">WHERE</span>
+            <span class="token-ident"> "e"."event_name"</span>
+            <span class="token-keyword"> ILIKE</span>
+            <span class="token-string"> '%checkout%'</span>
+            <span class="token-keyword"> ORDER BY</span>
+            <span class="token-ident"> "e"."occurred_at"</span>
+            <span class="token-keyword"> DESC</span>
+            <span class="token-keyword"> LIMIT</span>
+            <span class="token-number"> 4</span><span class="token-punct">;</span>
+          </div>
+        } @else {
+          <div class="code-line">
+            <span class="token-keyword">SELECT</span>
+            <span class="token-ident"> o.id</span><span class="token-punct">,</span>
+            <span class="token-ident"> c.email</span><span class="token-punct">,</span>
+            <span class="token-ident"> o.total_sek</span><span class="token-punct">,</span>
+            <span class="token-ident"> o.status</span><span class="token-punct">,</span>
+            <span class="token-ident"> o.payload</span>
+          </div>
+          <div class="code-line">
+            <span class="token-keyword">FROM</span>
+            <span class="token-ident"> orders</span>
+            <span class="token-ident"> o</span>
+            <span class="token-keyword"> JOIN</span>
+            <span class="token-ident"> customers</span>
+            <span class="token-ident"> c</span>
+            <span class="token-keyword"> ON</span>
+            <span class="token-ident"> c.id</span>
+            <span class="token-operator"> =</span>
+            <span class="token-ident"> o.customer_id</span>
+          </div>
+          <div class="code-line">
+            <span class="token-keyword">WHERE</span>
+            <span class="token-ident"> o.status</span>
+            <span class="token-operator"> =</span>
+            <span class="token-string"> 'PAID'</span>
+            <span class="token-keyword"> ORDER BY</span>
+            <span class="token-ident"> o.created_at</span>
+            <span class="token-keyword"> DESC</span>
+            <span class="token-keyword"> LIMIT</span>
+            <span class="token-number"> 4</span><span class="token-punct">;</span>
+          </div>
+        }
       </div>
       <div class="editor-actions">
         <button type="button" class="run-btn" title="Execute Query (Ctrl+Enter)">
@@ -167,71 +223,139 @@
           tabindex="0"
         >
           <div class="table-responsive">
-            <table class="studio-grid" aria-label="Query Result Grid">
-              <thead>
-                <tr>
-                  <th scope="col" class="row-num-col">#</th>
-                  <th scope="col" class="align-right">
-                    <div class="th-content">
-                      <span class="col-name">id</span>
-                      <span class="chip-badge chip-pk">PK</span>
-                      <span class="col-type">bigint</span>
-                    </div>
-                  </th>
-                  <th scope="col" class="align-left">
-                    <div class="th-content">
-                      <span class="col-name">email</span>
-                      <span class="chip-badge chip-fk">FK</span>
-                      <span class="col-type">varchar</span>
-                    </div>
-                  </th>
-                  <th scope="col" class="align-right">
-                    <div class="th-content">
-                      <span class="col-name">total_sek</span>
-                      <span class="col-type">decimal</span>
-                    </div>
-                  </th>
-                  <th scope="col" class="align-center">
-                    <div class="th-content">
-                      <span class="col-name">status</span>
-                      <span class="col-type">varchar</span>
-                    </div>
-                  </th>
-                  <th scope="col" class="align-left">
-                    <div class="th-content">
-                      <span class="col-name">payload</span>
-                      <span class="col-type">json</span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of tableRows; track row.id; let idx = $index) {
+            @if (activeEngine === 'postgresql') {
+              <table class="studio-grid" aria-label="Query Result Grid">
+                <thead>
                   <tr>
-                    <td class="row-num-col">{{ idx + 1 }}</td>
-                    <td class="align-right mono-num font-bold">{{ row.id }}</td>
-                    <td class="align-left mono-text">{{ row.email }}</td>
-                    <td class="align-right mono-num">{{ row.total_sek }}</td>
-                    <td class="align-center">
-                      <span class="status-pill status-paid">{{ row.status }}</span>
-                    </td>
-                    <td class="align-left mono-json">
-                      <span class="json-chip">{{ row.payload }}</span>
-                    </td>
+                    <th scope="col" class="row-num-col">#</th>
+                    <th scope="col" class="align-right">
+                      <div class="th-content">
+                        <span class="col-name">event_id</span>
+                        <span class="chip-badge chip-pk">PK</span>
+                        <span class="col-type">bigint ID</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-left">
+                      <div class="th-content">
+                        <span class="col-name">source</span>
+                        <span class="col-type">text</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-right">
+                      <div class="th-content">
+                        <span class="col-name">amount_sek</span>
+                        <span class="col-type">numeric</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-center">
+                      <div class="th-content">
+                        <span class="col-name">status</span>
+                        <span class="col-type">varchar</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-left">
+                      <div class="th-content">
+                        <span class="col-name">payload</span>
+                        <span class="col-type">jsonb</span>
+                      </div>
+                    </th>
                   </tr>
-                }
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  @for (row of pgTableRows; track row.event_id; let idx = $index) {
+                    <tr>
+                      <td class="row-num-col">{{ idx + 1 }}</td>
+                      <td class="align-right mono-num font-bold">{{ row.event_id }}</td>
+                      <td class="align-left mono-text">{{ row.source }}</td>
+                      <td class="align-right mono-num">{{ row.amount_sek }}</td>
+                      <td class="align-center">
+                        <span class="status-pill status-paid">{{ row.status }}</span>
+                      </td>
+                      <td class="align-left mono-json">
+                        <span class="json-chip">{{ row.payload }}</span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            } @else {
+              <table class="studio-grid" aria-label="Query Result Grid">
+                <thead>
+                  <tr>
+                    <th scope="col" class="row-num-col">#</th>
+                    <th scope="col" class="align-right">
+                      <div class="th-content">
+                        <span class="col-name">id</span>
+                        <span class="chip-badge chip-pk">PK</span>
+                        <span class="col-type">bigint</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-left">
+                      <div class="th-content">
+                        <span class="col-name">email</span>
+                        <span class="chip-badge chip-fk">FK</span>
+                        <span class="col-type">varchar</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-right">
+                      <div class="th-content">
+                        <span class="col-name">total_sek</span>
+                        <span class="col-type">decimal</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-center">
+                      <div class="th-content">
+                        <span class="col-name">status</span>
+                        <span class="col-type">varchar</span>
+                      </div>
+                    </th>
+                    <th scope="col" class="align-left">
+                      <div class="th-content">
+                        <span class="col-name">payload</span>
+                        <span class="col-type">json</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of tableRows; track row.id; let idx = $index) {
+                    <tr>
+                      <td class="row-num-col">{{ idx + 1 }}</td>
+                      <td class="align-right mono-num font-bold">{{ row.id }}</td>
+                      <td class="align-left mono-text">{{ row.email }}</td>
+                      <td class="align-right mono-num">{{ row.total_sek }}</td>
+                      <td class="align-center">
+                        <span class="status-pill status-paid">{{ row.status }}</span>
+                      </td>
+                      <td class="align-left mono-json">
+                        <span class="json-chip">{{ row.payload }}</span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
           </div>
           <div class="studio-status-bar">
-            <div class="status-left">
-              <span class="status-indicator"></span>
-              <span class="status-metrics">14 ms • 4 rows • Wire Protocol v10 • SSH Bastion: prod-db-01</span>
-            </div>
-            <div class="status-right">
-              <span>Encoding: utf8mb4</span>
-              <span>Buffer: OK</span>
-            </div>
+            @if (activeEngine === 'postgresql') {
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">19 ms • 4 rows • Wire Protocol v3.0 • Schema: analytics</span>
+              </div>
+              <div class="status-right">
+                <span>Encoding: UTF8</span>
+                <span>TX: IDLE</span>
+              </div>
+            } @else {
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">14 ms • 4 rows • Wire Protocol v10 • SSH Bastion: prod-db-01</span>
+              </div>
+              <div class="status-right">
+                <span>Encoding: utf8mb4</span>
+                <span>Buffer: OK</span>
+              </div>
+            }
           </div>
         </div>
       }
@@ -245,110 +369,184 @@
           aria-labelledby="tab-explain"
           tabindex="0"
         >
-          <div class="explain-summary-bar">
-            <div class="summary-metric">
-              <span class="metric-label">Execution Strategy</span>
-              <span class="metric-val">Nested Loop (Indexed)</span>
-            </div>
-            <div class="summary-metric">
-              <span class="metric-label">Total Query Cost</span>
-              <span class="metric-val accent">1.77</span>
-            </div>
-            <div class="summary-metric">
-              <span class="metric-label">Estimated Rows</span>
-              <span class="metric-val emerald">4</span>
-            </div>
-            <div class="summary-metric">
-              <span class="metric-label">Access Method</span>
-              <span class="metric-val">ref + eq_ref</span>
-            </div>
-          </div>
-
-          <div class="explain-tree-container">
-            <!-- Root Node -->
-            <div class="tree-node root-node">
-              <div class="node-card">
-                <div class="node-header">
-                  <span class="node-type">Nested Loop Inner Join</span>
-                  <span class="node-cost-badge">Cost: 1.77</span>
-                </div>
-                <div class="node-desc">Combines matching rows from orders and customers on foreign key constraint</div>
+          @if (activeEngine === 'postgresql') {
+            <div class="explain-summary-bar">
+              <div class="summary-metric">
+                <span class="metric-label">Execution Strategy</span>
+                <span class="metric-val">Limit + Index Scan Backward</span>
               </div>
+              <div class="summary-metric">
+                <span class="metric-label">Total Query Cost</span>
+                <span class="metric-val accent">148.20</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-label">Estimated Rows</span>
+                <span class="metric-val emerald">4</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-label">Access Method</span>
+                <span class="metric-val">Index Scan + Limit</span>
+              </div>
+            </div>
 
-              <!-- Children Container -->
-              <div class="tree-branches">
-                <!-- Child Node 1 -->
-                <div class="tree-node-branch">
-                  <div class="branch-connector"></div>
-                  <div class="node-card leaf-card">
-                    <div class="node-header">
-                      <span class="table-name">orders (o)</span>
-                      <span class="access-badge index-range">INDEX RANGE</span>
-                    </div>
-                    <div class="node-title">Index Lookup on orders (idx_orders_status_created)</div>
-                    <div class="node-metrics-grid">
-                      <div class="metric-item">
-                        <span class="k">Key:</span>
-                        <span class="v">idx_orders_status_created</span>
-                      </div>
-                      <div class="metric-item">
-                        <span class="k">Cost:</span>
-                        <span class="v">1.42</span>
-                      </div>
-                      <div class="metric-item">
-                        <span class="k">Rows:</span>
-                        <span class="v">4</span>
-                      </div>
-                      <div class="metric-item">
-                        <span class="k">Filtered:</span>
-                        <span class="v">100.00%</span>
-                      </div>
-                    </div>
+            <div class="explain-tree-container">
+              <div class="tree-node root-node">
+                <div class="node-card">
+                  <div class="node-header">
+                    <span class="node-type">Limit (Node 1)</span>
+                    <span class="node-cost-badge">Cost: 148.20</span>
                   </div>
+                  <div class="node-desc">Caps ordered result stream from analytics.events to top 4 rows</div>
                 </div>
 
-                <!-- Child Node 2 -->
-                <div class="tree-node-branch">
-                  <div class="branch-connector"></div>
-                  <div class="node-card leaf-card">
-                    <div class="node-header">
-                      <span class="table-name">customers (c)</span>
-                      <span class="access-badge primary-key">PRIMARY KEY</span>
-                    </div>
-                    <div class="node-title">Eq_ref on customers (PRIMARY)</div>
-                    <div class="node-metrics-grid">
-                      <div class="metric-item">
-                        <span class="k">Key:</span>
-                        <span class="v">PRIMARY (id)</span>
+                <div class="tree-branches">
+                  <div class="tree-node-branch">
+                    <div class="branch-connector"></div>
+                    <div class="node-card leaf-card">
+                      <div class="node-header">
+                        <span class="table-name">"analytics"."events" (e)</span>
+                        <span class="access-badge index-range">INDEX SCAN</span>
                       </div>
-                      <div class="metric-item">
-                        <span class="k">Cost:</span>
-                        <span class="v">0.35</span>
-                      </div>
-                      <div class="metric-item">
-                        <span class="k">Rows:</span>
-                        <span class="v">1</span>
-                      </div>
-                      <div class="metric-item">
-                        <span class="k">Filtered:</span>
-                        <span class="v">100.00%</span>
+                      <div class="node-title">Index Scan Backward using idx_events_occurred on events</div>
+                      <div class="node-metrics-grid">
+                        <div class="metric-item">
+                          <span class="k">Key:</span>
+                          <span class="v">idx_events_occurred</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Cost:</span>
+                          <span class="v">148.00</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Rows:</span>
+                          <span class="v">4</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Filtered:</span>
+                          <span class="v">100.00%</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="studio-status-bar">
-            <div class="status-left">
-              <span class="status-indicator"></span>
-              <span class="status-metrics">Total Cost: 1.77 • Estimated Rows: 4 • Join Type: eq_ref • Engine: InnoDB</span>
+            <div class="studio-status-bar">
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">Total Cost: 148.20 • Estimated Rows: 4 • Scan: Index Scan Backward • Engine: PostgreSQL</span>
+              </div>
+              <div class="status-right">
+                <span>EXPLAIN (FORMAT JSON)</span>
+              </div>
             </div>
-            <div class="status-right">
-              <span>EXPLAIN FORMAT=TREE</span>
+          } @else {
+            <div class="explain-summary-bar">
+              <div class="summary-metric">
+                <span class="metric-label">Execution Strategy</span>
+                <span class="metric-val">Nested Loop (Indexed)</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-label">Total Query Cost</span>
+                <span class="metric-val accent">1.77</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-label">Estimated Rows</span>
+                <span class="metric-val emerald">4</span>
+              </div>
+              <div class="summary-metric">
+                <span class="metric-label">Access Method</span>
+                <span class="metric-val">ref + eq_ref</span>
+              </div>
             </div>
-          </div>
+
+            <div class="explain-tree-container">
+              <!-- Root Node -->
+              <div class="tree-node root-node">
+                <div class="node-card">
+                  <div class="node-header">
+                    <span class="node-type">Nested Loop Inner Join</span>
+                    <span class="node-cost-badge">Cost: 1.77</span>
+                  </div>
+                  <div class="node-desc">Combines matching rows from orders and customers on foreign key constraint</div>
+                </div>
+
+                <!-- Children Container -->
+                <div class="tree-branches">
+                  <!-- Child Node 1 -->
+                  <div class="tree-node-branch">
+                    <div class="branch-connector"></div>
+                    <div class="node-card leaf-card">
+                      <div class="node-header">
+                        <span class="table-name">orders (o)</span>
+                        <span class="access-badge index-range">INDEX RANGE</span>
+                      </div>
+                      <div class="node-title">Index Lookup on orders (idx_orders_status_created)</div>
+                      <div class="node-metrics-grid">
+                        <div class="metric-item">
+                          <span class="k">Key:</span>
+                          <span class="v">idx_orders_status_created</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Cost:</span>
+                          <span class="v">1.42</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Rows:</span>
+                          <span class="v">4</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Filtered:</span>
+                          <span class="v">100.00%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Child Node 2 -->
+                  <div class="tree-node-branch">
+                    <div class="branch-connector"></div>
+                    <div class="node-card leaf-card">
+                      <div class="node-header">
+                        <span class="table-name">customers (c)</span>
+                        <span class="access-badge primary-key">PRIMARY KEY</span>
+                      </div>
+                      <div class="node-title">Eq_ref on customers (PRIMARY)</div>
+                      <div class="node-metrics-grid">
+                        <div class="metric-item">
+                          <span class="k">Key:</span>
+                          <span class="v">PRIMARY (id)</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Cost:</span>
+                          <span class="v">0.35</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Rows:</span>
+                          <span class="v">1</span>
+                        </div>
+                        <div class="metric-item">
+                          <span class="k">Filtered:</span>
+                          <span class="v">100.00%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-status-bar">
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">Total Cost: 1.77 • Estimated Rows: 4 • Join Type: eq_ref • Engine: InnoDB</span>
+              </div>
+              <div class="status-right">
+                <span>EXPLAIN FORMAT=TREE</span>
+              </div>
+            </div>
+          }
         </div>
       }
 
@@ -361,13 +559,80 @@
           aria-labelledby="tab-ddl"
           tabindex="0"
         >
-          <div class="ddl-inspector-layout">
-            <div class="ddl-editor-pane">
-              <div class="ddl-code-header">
-                <span class="material-icons">terminal</span>
-                <span>SHOW CREATE TABLE orders;</span>
+          @if (activeEngine === 'postgresql') {
+            <div class="ddl-inspector-layout">
+              <div class="ddl-editor-pane">
+                <div class="ddl-code-header">
+                  <span class="material-icons">terminal</span>
+                  <span>\d+ "analytics"."events"</span>
+                </div>
+                <pre class="ddl-pre"><code><span class="ddl-kw">CREATE TABLE</span> <span class="ddl-ident">"analytics"."events"</span> (
+  <span class="ddl-ident">"event_id"</span> <span class="ddl-type">bigint</span> <span class="ddl-kw">NOT NULL GENERATED BY DEFAULT AS IDENTITY</span>,
+  <span class="ddl-ident">"event_name"</span> <span class="ddl-type">text</span> <span class="ddl-kw">NOT NULL</span>,
+  <span class="ddl-ident">"amount_sek"</span> <span class="ddl-type">numeric(10,2)</span> <span class="ddl-kw">NOT NULL DEFAULT</span> <span class="ddl-str">0.00</span>,
+  <span class="ddl-ident">"status"</span> <span class="ddl-type">varchar(32)</span> <span class="ddl-kw">NOT NULL DEFAULT</span> <span class="ddl-str">'PENDING'</span>,
+  <span class="ddl-ident">"payload"</span> <span class="ddl-type">jsonb</span> <span class="ddl-kw">NOT NULL</span>,
+  <span class="ddl-ident">"occurred_at"</span> <span class="ddl-type">timestamptz</span> <span class="ddl-kw">NOT NULL DEFAULT now()</span>,
+  <span class="ddl-kw">CONSTRAINT</span> <span class="ddl-ident">"pk_events"</span> <span class="ddl-kw">PRIMARY KEY</span> (<span class="ddl-ident">"event_id"</span>)
+);
+<span class="ddl-kw">CREATE INDEX</span> <span class="ddl-ident">"idx_events_occurred"</span> <span class="ddl-kw">ON</span> <span class="ddl-ident">"analytics"."events"</span> (<span class="ddl-ident">"occurred_at"</span> <span class="ddl-kw">DESC</span>);</code></pre>
               </div>
-              <pre class="ddl-pre"><code><span class="ddl-kw">CREATE TABLE</span> <span class="ddl-ident">`orders`</span> (
+
+              <div class="ddl-chips-pane">
+                <h4>Schema Metadata & Indexes</h4>
+                <div class="chips-stack">
+                  <div class="meta-card pk-card">
+                    <span class="material-icons">key</span>
+                    <div class="meta-info">
+                      <span class="meta-label">PRIMARY KEY</span>
+                      <code>PRIMARY KEY ("event_id")</code>
+                    </div>
+                  </div>
+
+                  <div class="meta-card idx-card">
+                    <span class="material-icons">bolt</span>
+                    <div class="meta-info">
+                      <span class="meta-label">SECONDARY INDEX</span>
+                      <code>idx_events_occurred ("occurred_at" DESC)</code>
+                    </div>
+                  </div>
+
+                  <div class="meta-card fk-card">
+                    <span class="material-icons">fingerprint</span>
+                    <div class="meta-info">
+                      <span class="meta-label">IDENTITY COLUMN</span>
+                      <code>GENERATED BY DEFAULT AS IDENTITY</code>
+                    </div>
+                  </div>
+
+                  <div class="meta-card engine-card">
+                    <span class="material-icons">dns</span>
+                    <div class="meta-info">
+                      <span class="meta-label">NAMESPACE & ENGINE</span>
+                      <code>Schema: analytics • Access Method: heap</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-status-bar">
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">Table: "analytics"."events" • Encoding: UTF8 • Schema: analytics</span>
+              </div>
+              <div class="status-right">
+                <span>DDL Ready</span>
+              </div>
+            </div>
+          } @else {
+            <div class="ddl-inspector-layout">
+              <div class="ddl-editor-pane">
+                <div class="ddl-code-header">
+                  <span class="material-icons">terminal</span>
+                  <span>SHOW CREATE TABLE orders;</span>
+                </div>
+                <pre class="ddl-pre"><code><span class="ddl-kw">CREATE TABLE</span> <span class="ddl-ident">`orders`</span> (
   <span class="ddl-ident">`id`</span> <span class="ddl-type">bigint unsigned</span> <span class="ddl-kw">NOT NULL AUTO_INCREMENT</span>,
   <span class="ddl-ident">`customer_id`</span> <span class="ddl-type">bigint unsigned</span> <span class="ddl-kw">NOT NULL</span>,
   <span class="ddl-ident">`total_sek`</span> <span class="ddl-type">decimal(10,2)</span> <span class="ddl-kw">NOT NULL DEFAULT</span> <span class="ddl-str">'0.00'</span>,
@@ -378,55 +643,56 @@
   <span class="ddl-kw">KEY</span> <span class="ddl-ident">`idx_orders_status_created`</span> (<span class="ddl-ident">`status`</span>, <span class="ddl-ident">`created_at`</span> <span class="ddl-kw">DESC</span>),
   <span class="ddl-kw">CONSTRAINT</span> <span class="ddl-ident">`fk_orders_customer`</span> <span class="ddl-kw">FOREIGN KEY</span> (<span class="ddl-ident">`customer_id`</span>) <span class="ddl-kw">REFERENCES</span> <span class="ddl-ident">`customers`</span> (<span class="ddl-ident">`id`</span>) <span class="ddl-kw">ON DELETE RESTRICT</span>
 ) <span class="ddl-kw">ENGINE</span>=InnoDB <span class="ddl-kw">DEFAULT CHARSET</span>=utf8mb4 <span class="ddl-kw">COLLATE</span>=utf8mb4_unicode_ci;</code></pre>
-            </div>
+              </div>
 
-            <div class="ddl-chips-pane">
-              <h4>Schema Metadata & Indexes</h4>
-              <div class="chips-stack">
-                <div class="meta-card pk-card">
-                  <span class="material-icons">key</span>
-                  <div class="meta-info">
-                    <span class="meta-label">PRIMARY KEY</span>
-                    <code>PRIMARY KEY (id)</code>
+              <div class="ddl-chips-pane">
+                <h4>Schema Metadata & Indexes</h4>
+                <div class="chips-stack">
+                  <div class="meta-card pk-card">
+                    <span class="material-icons">key</span>
+                    <div class="meta-info">
+                      <span class="meta-label">PRIMARY KEY</span>
+                      <code>PRIMARY KEY (id)</code>
+                    </div>
                   </div>
-                </div>
 
-                <div class="meta-card idx-card">
-                  <span class="material-icons">bolt</span>
-                  <div class="meta-info">
-                    <span class="meta-label">SECONDARY INDEX</span>
-                    <code>KEY idx_orders_status_created (status, created_at DESC)</code>
+                  <div class="meta-card idx-card">
+                    <span class="material-icons">bolt</span>
+                    <div class="meta-info">
+                      <span class="meta-label">SECONDARY INDEX</span>
+                      <code>KEY idx_orders_status_created (status, created_at DESC)</code>
+                    </div>
                   </div>
-                </div>
 
-                <div class="meta-card fk-card">
-                  <span class="material-icons">link</span>
-                  <div class="meta-info">
-                    <span class="meta-label">FOREIGN KEY</span>
-                    <code>CONSTRAINT fk_orders_customer (customer_id -&gt; customers.id)</code>
+                  <div class="meta-card fk-card">
+                    <span class="material-icons">link</span>
+                    <div class="meta-info">
+                      <span class="meta-label">FOREIGN KEY</span>
+                      <code>CONSTRAINT fk_orders_customer (customer_id -&gt; customers.id)</code>
+                    </div>
                   </div>
-                </div>
 
-                <div class="meta-card engine-card">
-                  <span class="material-icons">dns</span>
-                  <div class="meta-info">
-                    <span class="meta-label">STORAGE ENGINE</span>
-                    <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>
+                  <div class="meta-card engine-card">
+                    <span class="material-icons">dns</span>
+                    <div class="meta-info">
+                      <span class="meta-label">STORAGE ENGINE</span>
+                      <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="studio-status-bar">
-            <div class="status-left">
-              <span class="status-indicator"></span>
-              <span class="status-metrics">Table: orders • Collation: utf8mb4_unicode_ci • Engine: InnoDB</span>
+            <div class="studio-status-bar">
+              <div class="status-left">
+                <span class="status-indicator"></span>
+                <span class="status-metrics">Table: orders • Collation: utf8mb4_unicode_ci • Engine: InnoDB</span>
+              </div>
+              <div class="status-right">
+                <span>DDL Ready</span>
+              </div>
             </div>
-            <div class="status-right">
-              <span>DDL Ready</span>
-            </div>
-          </div>
+          }
         </div>
       }
     </div>
@@ -435,7 +701,7 @@
     <div class="sql-symbol-bar" aria-label="Docked SQL Symbol Bar">
       <span class="symbol-bar-title">SQL Symbols:</span>
       <div class="symbol-scroll">
-        @for (sym of sqlSymbols; track sym) {
+        @for (sym of currentSqlSymbols; track sym) {
           <button
             type="button"
             class="symbol-chip"

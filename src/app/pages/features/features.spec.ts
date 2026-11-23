@@ -25,6 +25,7 @@ describe('Features', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('Native Wire Protocol & Connectivity');
     expect(compiled.textContent).toContain('Native MySQL & MariaDB Wire Protocol v10');
+    expect(compiled.textContent).toContain('Native PostgreSQL Wire Protocol v3.0');
     expect(compiled.textContent).toContain('Flexible Direct TCP & SSL/TLS');
     expect(compiled.textContent).toContain('SSH Bastion & Jump-Host Tunneling');
     expect(compiled.textContent).toContain('Active-Session Foreground Service');

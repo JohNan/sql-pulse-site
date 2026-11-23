@@ -73,7 +73,7 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/connections_home_light.png',
       darkImage: 'screenshots/connections_home_dark.png',
       description:
-        'Manage MySQL & MariaDB clusters with live SSH bastion tunnel indicators, SSL status badges, and active session controls.',
+        'Manage MySQL, MariaDB & PostgreSQL clusters with engine badges, live SSH bastion tunnel indicators, SSL status badges, and active session controls.',
     },
     {
       id: 'connection-ssh-config',
@@ -83,7 +83,7 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/connection_ssh_config_light.png',
       darkImage: 'screenshots/connection_ssh_config_dark.png',
       description:
-        'Configure multi-hop SSH port forwarding, hardware-backed Keystore keys, and step-by-step connection handshake diagnostics.',
+        'Configure multi-hop SSH port forwarding, hardware-backed Keystore keys, engine options, and step-by-step connection handshake diagnostics.',
     },
     {
       id: 'schema-columns',
@@ -93,7 +93,7 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/schema_columns_light.png',
       darkImage: 'screenshots/schema_columns_dark.png',
       description:
-        'Browse databases, tables, views, routines, triggers, primary keys, auto-increment badges, and column data types.',
+        'Browse databases, schemas, tables, views, materialized views, routines, triggers, primary keys, identity/AI badges, and column data types.',
     },
     {
       id: 'schema-ddl',
@@ -106,6 +106,16 @@ export class ScreenshotShowcase implements OnInit {
         'Inspect and copy complete CREATE TABLE DDL definitions, BTREE index cardinalities, and foreign key constraints.',
     },
     {
+      id: 'postgres-schema-explorer',
+      title: 'PostgreSQL 3-Tier Schema & Materialized Views',
+      category: 'schema',
+      badge: 'PostgreSQL Schema',
+      lightImage: 'screenshots/postgres_schema_explorer_light.png',
+      darkImage: 'screenshots/postgres_schema_explorer_dark.png',
+      description:
+        'Navigate PostgreSQL Database -> Schema -> Object namespaces, inspect Materialized Views with read-only & identity (ID) badges, and open data grids.',
+    },
+    {
       id: 'table-data-grid',
       title: '2D Table Data Grid & Staged CRUD',
       category: 'datagrid',
@@ -113,7 +123,7 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/table_data_grid_light.png',
       darkImage: 'screenshots/table_data_grid_dark.png',
       description:
-        'Filter rows with WHERE clauses, inspect NULL and JSON pills, and stage transactional row mutations before committing.',
+        'Filter rows with WHERE clauses, inspect read-only views/matviews, edit keyless PostgreSQL rows via ctid, and stage transactional mutations.',
     },
     {
       id: 'sql-query-studio',
@@ -123,7 +133,17 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/query_studio_explain_light.png',
       darkImage: 'screenshots/query_studio_explain_dark.png',
       description:
-        'Author queries with real-time SQL syntax highlighting, docked SQL symbol bar, and visual EXPLAIN execution plan warnings.',
+        'Author queries with dialect-aware SQL syntax highlighting, docked SQL symbol bar, and visual EXPLAIN execution plan warnings.',
+    },
+    {
+      id: 'postgres-query-studio',
+      title: 'PostgreSQL Query Studio, TX Guard & EXPLAIN',
+      category: 'querystudio',
+      badge: 'PostgreSQL EXPLAIN',
+      lightImage: 'screenshots/postgres_query_studio_explain_light.png',
+      darkImage: 'screenshots/postgres_query_studio_explain_dark.png',
+      description:
+        'Inspect PostgreSQL EXPLAIN (FORMAT JSON) plan trees, double-quoted & JSONB syntax highlighting, and failed-transaction 1-tap ROLLBACK recovery.',
     },
     {
       id: 'server-process-monitor',
@@ -133,7 +153,17 @@ export class ScreenshotShowcase implements OnInit {
       lightImage: 'screenshots/server_process_monitor_light.png',
       darkImage: 'screenshots/server_process_monitor_dark.png',
       description:
-        'Monitor live QPS sparklines, InnoDB buffer pool hit ratio, active threads, and terminate slow queries.',
+        'Monitor live MySQL/MariaDB QPS sparklines, InnoDB buffer pool hit ratio, active threads, and terminate slow queries.',
+    },
+    {
+      id: 'postgres-server-monitor',
+      title: 'PostgreSQL Telemetry, pg_stat_activity & Roles',
+      category: 'monitor',
+      badge: 'PostgreSQL Monitor',
+      lightImage: 'screenshots/postgres_server_monitor_light.png',
+      darkImage: 'screenshots/postgres_server_monitor_dark.png',
+      description:
+        'Track PostgreSQL TPS sparklines, shared buffer hit ratio, pg_stat_activity backends, pg_stat_statements slow digests, settings, and roles.',
     },
     {
       id: 'settings-security',
