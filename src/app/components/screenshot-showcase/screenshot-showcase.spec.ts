@@ -20,10 +20,10 @@ describe('ScreenshotShowcase', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have all 7 categories and 8 screenshots initially', () => {
+  it('should have all 7 categories and 11 screenshots initially', () => {
     expect(component.categories.length).toBe(7);
-    expect(component.screenshots.length).toBe(8);
-    expect(component.filteredScreenshots.length).toBe(8);
+    expect(component.screenshots.length).toBe(11);
+    expect(component.filteredScreenshots.length).toBe(11);
   });
 
   it('should filter screenshots by category', () => {
@@ -32,28 +32,38 @@ describe('ScreenshotShowcase', () => {
     expect(component.filteredScreenshots.every(s => s.category === 'connections')).toBe(true);
 
     component.setCategory('schema');
-    expect(component.filteredScreenshots.length).toBe(2);
+    expect(component.filteredScreenshots.length).toBe(3);
     expect(component.filteredScreenshots.every(s => s.category === 'schema')).toBe(true);
-    expect(component.filteredScreenshots.map(s => s.id)).toEqual(['schema-columns', 'schema-ddl']);
+    expect(component.filteredScreenshots.map(s => s.id)).toEqual([
+      'schema-columns',
+      'schema-ddl',
+      'postgres-schema-explorer',
+    ]);
 
     component.setCategory('datagrid');
     expect(component.filteredScreenshots.length).toBe(1);
     expect(component.filteredScreenshots[0].id).toBe('table-data-grid');
 
     component.setCategory('querystudio');
-    expect(component.filteredScreenshots.length).toBe(1);
-    expect(component.filteredScreenshots[0].id).toBe('sql-query-studio');
+    expect(component.filteredScreenshots.length).toBe(2);
+    expect(component.filteredScreenshots.map(s => s.id)).toEqual([
+      'sql-query-studio',
+      'postgres-query-studio',
+    ]);
 
     component.setCategory('monitor');
-    expect(component.filteredScreenshots.length).toBe(1);
-    expect(component.filteredScreenshots[0].id).toBe('server-process-monitor');
+    expect(component.filteredScreenshots.length).toBe(2);
+    expect(component.filteredScreenshots.map(s => s.id)).toEqual([
+      'server-process-monitor',
+      'postgres-server-monitor',
+    ]);
 
     component.setCategory('security');
     expect(component.filteredScreenshots.length).toBe(1);
     expect(component.filteredScreenshots[0].id).toBe('settings-security');
 
     component.setCategory('all');
-    expect(component.filteredScreenshots.length).toBe(8);
+    expect(component.filteredScreenshots.length).toBe(11);
   });
 
   it('should open and close modal lightbox', () => {

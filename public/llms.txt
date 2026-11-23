@@ -1,46 +1,45 @@
 # SQL Pulse — Android SQL Database Studio
 
-SQL Pulse is a production-grade, high-performance Android MySQL and MariaDB client and database management studio (`com.johnan.mysqlclient`, website: https://sql-pulse.nanzen.se/) engineered by Nanzen for database administrators, backend developers, site reliability engineers (SREs), and DevOps professionals who need native, secure, low-latency mobile database administration.
+SQL Pulse is a production-grade, high-performance Android MySQL, MariaDB, and PostgreSQL client and database management studio (`com.johnan.mysqlclient`, website: https://sql-pulse.nanzen.se/) engineered by Nanzen for database administrators, backend developers, site reliability engineers (SREs), and DevOps professionals who need native, secure, low-latency mobile database administration.
 
 ## Core Architecture & Engine
 
-*   **Pure-Kotlin Wire Protocol v10 Engine (`:mysql-core`):** Zero-dependency pure-Kotlin (`kotlin("jvm")`) implementation of the MySQL Client/Server Wire Protocol v10 running entirely on `kotlinx-coroutines-core`. Completely eliminates heavy JDBC drivers and JVM ORM overhead.
-    *   Full handshake initialization (Protocol 10), Capability Flags negotiation, and SSL/TLS socket upgrades.
-    *   Fast authentication support: `mysql_native_password`, `caching_sha2_password` (RSA keypair and AES-GCM scramble exchange via standard JVM crypto).
-    *   Low-level packet encoding/decoding: OK packet, ERR packet, EOF packet, Column Definition packet, Text and Binary Row Data packets, `COM_QUERY`, `COM_PING`, `COM_QUIT`, and `COM_STMT_EXECUTE`.
-*   **SSH Bastion Tunneling (`:ssh-core`):** Direct-tcpip SSH port forwarding engine (`io.github.johnan:ssh-core`) allowing secure database connections to private VPCs, bastion jump-hosts, and air-gapped database clusters without public IP exposure. Features Trust-On-First-Use (TOFU) host-key fingerprinting and hardware Keystore authentication.
+*   **Shared Pure-Kotlin SQL Contracts (`:sql-core`):** Engine-agnostic Kotlin contracts (`DatabaseEngine`, `SqlConnection`, `SqlSessionPool`, `SqlQueryResult`, `SqlTransactionState`, `SqlTlsUpgrader`) with SNI + multi-cert PEM TLS upgrades and zero JDBC/ORM overhead.
+*   **Pure-Kotlin Wire Protocol v10 Engine (`:mysql-core`):** Zero-dependency pure-Kotlin (`kotlin("jvm")`) implementation of the MySQL Client/Server Wire Protocol v10 running on `kotlinx-coroutines-core`. Supports handshake initialization (Protocol 10), Capability Flags, SSL/TLS upgrades, `mysql_native_password`, `caching_sha2_password` (RSA/AES-GCM), Text and Binary Row packets, `COM_QUERY`, `COM_PING`, `COM_QUIT`, and `COM_STMT_EXECUTE`.
+*   **Pure-Kotlin PostgreSQL Wire Protocol v3.0 Engine (`:postgres-core`):** Zero-dependency pure-Kotlin (`kotlin("jvm")`) implementation of PostgreSQL Wire Protocol v3.0 with `SSLRequest` TLS+SNI, `StartupMessage` + custom `startupOptions`, `SCRAM-SHA-256`, `SCRAM-SHA-256-PLUS` (`tls-server-end-point` channel binding), MD5/cleartext/trust auth, Simple & Extended Query streaming, `ReadyForQuery` transaction state tracking (`IDLE` / `IN_TRANSACTION` / `FAILED`), out-of-band `CancelRequest`, and `PostgresSessionPool`.
+*   **SSH Bastion Tunneling (`:ssh-core`):** Direct-tcpip SSH port forwarding engine (`io.github.johnan:ssh-core`) allowing secure database connections to private VPCs, bastion jump-hosts, and air-gapped database clusters without public IP exposure. Features Trust-On-First-Use (TOFU) host-key fingerprinting, optional 2-hop SSH ProxyJump, and hardware Keystore authentication.
 *   **Hardware-Backed Keystore & Biometric Security:** Master database credentials, private keys, and connection profiles are encrypted at rest using Android Keystore `AES-256-GCM`. Access is gated by biometric authentication (fingerprint, face unlock) with system lock fallback.
-*   **Zero-Middleman Direct Architecture:** No telemetry servers, no intermediate cloud proxies, and no external relay services. Sockets connect directly from the Android device to the target MySQL/MariaDB host or SSH bastion.
+*   **Zero-Middleman Direct Architecture:** No telemetry servers, no intermediate cloud proxies, and no external relay services. Sockets connect directly from the Android device to the target MySQL, MariaDB, or PostgreSQL host or SSH bastion.
 
 ## Key Features & Studio Capabilities
 
 ### 1. Interactive SQL Query Studio & Visual EXPLAIN
-*   **Monospace SQL Editor:** Syntax-highlighted query editor with docked horizontal symbol bar (`SELECT`, `WHERE`, `JOIN`, `LIMIT`, `ORDER BY`, `;`), query history, and parameterized snippet library.
-*   **Visual EXPLAIN Cost Tree:** Interactive visualization of MySQL execution plans (`EXPLAIN FORMAT=JSON`), detailing access types (`ALL`, `index`, `range`, `ref`, `eq_ref`, `const`), filtered percentages, temporary table usage, filesort triggers, and cost metrics to troubleshoot slow queries on mobile.
-*   **Out-of-Band Query Cancellation:** Separate management socket connection capable of issuing instant `KILL QUERY <id>` commands to immediately abort long-running runaway queries without dropping the primary connection session.
-*   **Background Data Export:** Export result sets to CSV, JSON, and formatted SQL INSERT statements with Android DownloadManager and system share sheets.
+*   **Dialect-Aware SQL Editor:** Syntax highlighting for MySQL/MariaDB and PostgreSQL (backticks vs. double-quoted identifiers and JSONB operators), docked engine symbol bars, schema-linked autocomplete, query history, parameterized snippets, and interactive transaction `ROLLBACK` recovery on `FAILED` PostgreSQL transactions.
+*   **Visual EXPLAIN Cost Tree:** Interactive indented tree visualization of MySQL `EXPLAIN FORMAT=JSON` and PostgreSQL `EXPLAIN (FORMAT JSON)` execution plans, detailing node operations, access types (`ALL`, `index`, `range`, `ref`, `Seq Scan`, `Index Scan`), cost metrics, and full-scan warnings.
+*   **Out-of-Band Query Cancellation:** Separate control channel issues instant MySQL `KILL QUERY <id>` or PostgreSQL `pg_cancel_backend` / wire `CancelRequest` aborts without dropping the primary session.
+*   **Background Data Export:** Stream result sets to CSV (free) or JSON and dialect-aware MySQL/PostgreSQL SQL `INSERT` scripts (Pro) via Android `DownloadManager` and system share sheets.
 
 ### 2. 2D Table Data Grid & Transactional CRUD
-*   **Two-Dimensional Virtualized Grid:** High-density monospace tabular grid supporting bidirectional smooth scrolling, sticky column headers, and primary key (`PK`) pinning.
-*   **Transactional Cell Editing:** Inline cell editing with staged pending changes, rollback capability, and explicit `COMMIT` / `ROLLBACK` transactional safeguards.
-*   **Pill-Shaped Type Badges:** Color-coded micro-badges for `PK` (Amber Gold), `FK` (Frost Cyan), `NULL`, `JSON`, and `BLOB` fields with inline detail inspectors.
+*   **Two-Dimensional Virtualized Grid:** High-density monospace tabular grid supporting bidirectional smooth scrolling, sticky column headers, read-only view/materialized view mode, and pinned primary/identity keys.
+*   **Transactional Cell Editing:** Inline cell editing with pending SQL previews, staged mutations, PostgreSQL keyless single-row edits via `ctid`, and explicit `COMMIT` / `ROLLBACK` transactional safeguards.
+*   **Pill-Shaped Type Badges:** Color-coded micro-badges for `PK` (Amber Gold), `ID` / `AI`, `FK` (Frost Cyan), `NULL`, `JSON`/`JSONB`, and `BLOB` fields with inline detail inspectors.
 
-### 3. Schema & DDL Inspector
-*   **Hierarchical Schema Explorer:** Fast inspection of databases, tables, views, stored procedures, triggers, indexes, and foreign key relations.
-*   **Instant DDL Generation:** One-tap `SHOW CREATE TABLE` DDL inspection with syntax highlighting and clipboard export.
-*   **Table Metadata & Index Metrics:** Detailed storage engine stats (`InnoDB`, `MyISAM`), row counts, data size, index size, collation, and index cardinality.
+### 3. 3-Tier Schema & DDL Inspector
+*   **Multi-Engine Namespace Explorer:** Fast inspection of 3-tier PostgreSQL `Database -> Schema -> Object` hierarchies (including Materialized Views and optional system schemas) and MySQL databases, tables, views, routines, triggers, indexes, foreign keys, and free interactive ER diagrams.
+*   **Dialect-Accurate DDL Generation:** One-tap `SHOW CREATE TABLE` and PostgreSQL `CREATE TABLE "schema"."table"` (`GENERATED BY DEFAULT AS IDENTITY`) DDL inspection and visual table designer.
+*   **Table Metadata & Index Metrics:** Storage engine & access method stats (`InnoDB`, `MyISAM`, PostgreSQL `heap`), row counts, data size, index size, collation, and index cardinality.
 
 ### 4. Real-Time Server Process Monitor
-*   **Live Thread Telemetry:** Visualizes `SHOW FULL PROCESSLIST` with real-time thread activity, active user accounts, client hostnames, target databases, command states, and execution elapsed times.
-*   **Administrative Process Termination:** Out-of-band administrative execution of `KILL <process_id>` to instantly terminate stuck or resource-hogging background threads.
+*   **Live Multi-Engine Telemetry:** MySQL QPS/InnoDB buffer pool KPIs, `SHOW FULL PROCESSLIST`, `performance_schema` digests, `mysql.slow_log`, and InnoDB locks; PostgreSQL TPS/shared buffer hit KPIs, `pg_stat_activity`, `pg_locks`, `pg_stat_statements`, server settings, and roles.
+*   **Administrative Process Termination:** Out-of-band termination via MySQL `KILL <process_id>` or PostgreSQL `pg_cancel_backend` / `pg_terminate_backend`.
 *   **Destructive Query Safeguards:** Built-in semantic parser intercepts destructive queries (`DROP DATABASE`, `DROP TABLE`, `TRUNCATE`, mass `DELETE` without `WHERE`) and requires explicit multi-step confirmation before submission.
 
 ## Technical Specifications
 
 *   **Application ID:** `com.johnan.mysqlclient`
 *   **Platform:** Android 9.0+ (API level 28+)
-*   **UI Framework:** Jetpack Compose (Material 3), Light & Dark Theme, dynamic screen adaptation for phones, foldables, and tablets.
-*   **Protocols Supported:** MySQL Protocol 10 (MySQL 5.7, 8.0+, MariaDB 10.3+)
+*   **UI Framework:** Jetpack Compose (Material 3), Light, Dark & Nord themes, dynamic screen adaptation for phones, foldables, and tablets.
+*   **Protocols Supported:** MySQL Protocol 10 (MySQL 5.7, 8.0+, MariaDB 10.3+) and PostgreSQL Wire Protocol v3.0 (PostgreSQL 12+)
 *   **SSH Protocols:** SSH-2.0, direct-tcpip port forwarding, ECDSA, Ed25519, RSA-SHA2-256/512.
 *   **Localization:** English (`en-US`), German (`de-DE`), Spanish (`es-ES`), French (`fr-FR`).
 *   **Updates & Billing:** Google Play In-App Updates (Immediate priority for security fixes, flexible background for feature drops) and Google Play In-App Purchases (Pro features).

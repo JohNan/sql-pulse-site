@@ -2,11 +2,11 @@
   <div class="hero-content">
     <div class="hero-app-badge">
       <img src="favicon.svg" alt="SQL Pulse App Logo" class="hero-badge-logo" />
-      <span>Native Android MySQL &amp; MariaDB Studio</span>
+      <span>Native Android MySQL, MariaDB &amp; PostgreSQL Studio</span>
     </div>
     <h1>SQL Pulse — Database Studio</h1>
     <p>
-      High-density SQL query studio, visual EXPLAIN analyzer, 2D table data grid, real-time process monitor, and SSH bastion tunneling—engineered natively with Material 3 and a pure-Kotlin Wire Protocol v10 engine.
+      High-density SQL query studio, visual EXPLAIN analyzer, 2D table data grid, 3-tier schema inspector, real-time telemetry monitor, and SSH bastion tunneling—engineered natively with Material 3 and pure-Kotlin Wire Protocol v10 &amp; v3.0 engines.
     </p>
     <app-button variant="primary" href="https://play.google.com/store/apps/details?id=com.johnan.mysqlclient" target="_blank">
       <span class="material-icons">get_app</span>
@@ -32,32 +32,32 @@
     <app-feature-card
       icon="code"
       title="Interactive SQL Query Studio"
-      description="Author queries with real-time SQL syntax highlighting, docked SQL symbol bar, parameterized snippets, and instant multi-statement execution."
+      description="Author MySQL & PostgreSQL queries with dialect-aware syntax highlighting, schema autocompletion, docked SQL symbol bar, and transaction error rollback recovery."
     ></app-feature-card>
     <app-feature-card
       icon="account_tree"
       title="Visual EXPLAIN Plan Analyzer"
-      description="Inspect execution trees, index access paths, table scans, join costs, and filtered row ratios with color-coded efficiency badges."
+      description="Inspect MySQL EXPLAIN FORMAT=JSON and PostgreSQL EXPLAIN (FORMAT JSON) execution trees with access paths, table scan warnings, and cost badges."
     ></app-feature-card>
     <app-feature-card
       icon="table_chart"
       title="2D Table Data Grid & CRUD"
-      description="Fluid two-dimensional tabular data grid with PK/FK indicator chips, inline cell editing, column sorting, pagination, and transactional UPDATEs."
+      description="Fluid two-dimensional tabular data grid with PK/FK/ID chips, PostgreSQL keyless ctid edits, read-only views/matviews inspection, sorting, and staged mutations."
     ></app-feature-card>
     <app-feature-card
       icon="schema"
       title="Visual Schema & DDL Inspector"
-      description="Browse databases, tables, views, stored procedures, triggers, and foreign keys with free interactive ER diagrams and live SHOW CREATE TABLE DDL."
+      description="Browse PostgreSQL Database -> Schema -> Object hierarchies (including Materialized Views) and MySQL databases with free interactive ER diagrams and live DDL."
     ></app-feature-card>
     <app-feature-card
       icon="monitor_heart"
       title="Real-Time Process Monitor"
-      description="Monitor active server threads (SHOW FULL PROCESSLIST), track query runtimes, spot connection spikes, and execute one-tap KILL QUERY commands."
+      description="Monitor MySQL SHOW FULL PROCESSLIST & performance_schema or PostgreSQL pg_stat_activity, pg_stat_statements, settings, and roles with one-tap cancellation."
     ></app-feature-card>
     <app-feature-card
       icon="memory"
-      title="Pure-Kotlin Wire Protocol v10"
-      description="Zero-dependency, high-performance pure-Kotlin MySQL Client/Server Wire Protocol v10 engine supporting fast auth, TLS/SSL, and binary row decoding."
+      title="Pure-Kotlin Wire Protocols (v10 & v3.0)"
+      description="Zero-dependency pure-Kotlin MySQL Protocol v10 and PostgreSQL Wire Protocol v3.0 engines with SCRAM-SHA-256-PLUS channel binding, TLS with SNI, and fast row decoding."
     ></app-feature-card>
     <app-feature-card
       icon="vpn_lock"
@@ -99,7 +99,7 @@
 <app-query-studio-preview></app-query-studio-preview>
 
 <section class="cta-section">
-  <h2>Ready to command your MySQL databases on Android?</h2>
+  <h2>Ready to command your MySQL &amp; PostgreSQL databases on Android?</h2>
   <app-button variant="primary" href="https://play.google.com/store/apps/details?id=com.johnan.mysqlclient" target="_blank">
     <span class="material-icons">android</span>
     <span>Download on Google Play</span>
